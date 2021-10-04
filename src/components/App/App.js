@@ -2,38 +2,40 @@ import React from 'react'
 import { Route, Switch } from 'react-router-dom'
 import './App.css'
 import Header from '../Header/Header'
-import Promo from '../Promo/Promo'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
-import NavTab from '../NavTab/NavTab'
-import AboutProject from '../AboutProject/AboutProject'
-import Techs from '../Techs/Techs'
-import AboutMe from '../AboutMe/AboutMe'
+import Main from '../Main/Main'
+import EnterBlock from '../EnterBlock.css/EnterBlock'
+import Menu from '../Menu/Menu'
 import Footer from '../Footer/Footer'
+import PageNotFound from '../PageNotFound/PageNotFound'
+import MenuResult from '../MenuResult/MenuResult'
 
 function App() {
 	return (
 		<div className='App'>
 			<div className='page'>
-				<Header />
 				<Switch>
 					<Route exact path='/'>
-						<Promo />
-						<NavTab />
-						<AboutProject />
-						<Techs />
-						<AboutMe />
+						<Header name='promo'>
+							<EnterBlock />
+						</Header>
+						<Main />
 					</Route>
 					<Route path='/movies'>
+						<Header name='menu' />
+						<Menu />
 						<Movies />
 					</Route>
 					<Route path='/saved-movies'>
+						<Header name='menu' />
 						<SavedMovies />
 					</Route>
 					<Route path='/profile'>
+						<Header name='menu' />
 						<Profile />
 					</Route>
 					<Route path='/signup'>
@@ -41,6 +43,12 @@ function App() {
 					</Route>
 					<Route path='/signin'>
 						<Login />
+					</Route>
+					<Route path='/temp'>
+						<MenuResult />
+					</Route>
+					<Route path='*'>
+						<PageNotFound />
 					</Route>
 				</Switch>
 				<Footer />

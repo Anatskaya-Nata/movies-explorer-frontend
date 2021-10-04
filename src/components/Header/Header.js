@@ -1,16 +1,16 @@
 import './Header.css'
 import React from 'react'
 import headerLogo from '../../images/headerLogo.svg'
-//import headerGreenButton from '../../images/headerGreenButton.svg'
+import { Link } from 'react-router-dom'
 
 function Header(props) {
 	return (
-		<header className='header header__promo'>
-			<img src={headerLogo} alt='Логотип' className='header__logo' />
-			<div className='header__buttonblock'>
-				<span className='header__regbutton'>Регистрация</span>
-				<button className='header__logbutton'>Вoйти</button>
-			</div>
+		<header className={`header header__${props.name}`}>
+			<Link to='/'>
+				<img src={headerLogo} alt='Логотип' className='header__logo' />
+			</Link>
+
+			<div className={`header__buttonblock_${props.name}`}>{props.children}</div>
 		</header>
 	)
 }

@@ -1,12 +1,17 @@
-import React from 'react';
+import React from 'react'
+import FormForProfile from '../FormForProfile/FormForProfile'
 
-function Profile(props){
-    return (
-        <div className='movies'>
-            <h2>'все про юзера'</h2>
-        </div>
-
-    );  
+function Profile(props) {
+	return (
+		<section className='login'>
+			<FormForProfile
+				name='pro'
+				title='Привет, Виталий!'
+				bottom_text='Редактировать'
+				bottom_link='Выйти из аккаунта'
+			/>
+		</section>
+	)
 }
 
-export default Profile;
+export default Profile
