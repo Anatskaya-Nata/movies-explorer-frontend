@@ -11,8 +11,11 @@ function SearchForm(props) {
 					<input
 						type='text'
 						name='movie'
+						required=''
 						placeholder='Фильм'
 						className='movies__searcher_input-text'
+						minLength='2'
+						maxLength='30'
 					/>
 				</div>
 				<button className='movies__searcher_button' type='submit'>

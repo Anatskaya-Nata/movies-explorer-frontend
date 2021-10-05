@@ -91,14 +91,16 @@
 
 @media screen and (min-width: 768px) {
 	.section__student_info {
+		max-width: 668px;
 		flex-direction: row;
 		justify-content: space-between;
-		align-items: stretch;
-		margin: 0 0 91px 0;
+		align-items: center;
+		margin: 0 auto 91px auto;
 	}
 
 	.section__student_block {
 		display: flex;
+		order: 1;
 		flex-direction: column;
 		justify-content: space-between;
 	}
@@ -116,6 +118,7 @@
 		max-height: 307px;
 		margin: 0;
 		border-radius: 10px;
+		order: 2;
 	}
 
 	.section__student_about {
@@ -159,6 +162,7 @@
 
 @media screen and (min-width: 1280px) {
 	.section__student_info {
+		max-width: 1140px;
 		margin: 0 auto 101px auto;
 	}
 

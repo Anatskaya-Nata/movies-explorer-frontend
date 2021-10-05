@@ -96,9 +96,10 @@
 	}
 
 	.section__paragraph {
+		max-width: 668px;
 		flex-direction: row;
 		justify-content: space-between;
-		margin: 0 0 93px 0;
+		margin: 0 auto 93px;
 	}
 
 	.section__textblock {
@@ -142,7 +143,8 @@
 	}
 
 	.section__paragraph {
-		margin: 0 0 110px 0;
+		max-width: 1140px;
+		margin: 0 auto 110px;
 	}
 
 	.section__textblock {

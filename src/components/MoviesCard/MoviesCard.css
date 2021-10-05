@@ -1,10 +1,12 @@
 .movies__card {
+	max-width: 300px;
 	display: flex;
 	flex-direction: column;
+	margin: 0 auto;
 }
 
 .movies__shot {
-	/*	max-width: 300px;*/
+	/*max-width: 300px;*/
 	margin: 34px 0 0 0;
 }
 
@@ -19,7 +21,7 @@
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	margin: 15px 0 29px 0;
+	margin: 10px 0 25px 0;
 }
 
 .movies__shot_title {
@@ -39,6 +41,12 @@
 .movies__shot_choice-color {
 	width: 10px;
 	height: 10px;
+	margin: 7.5px;
+}
+
+.movies__shot_choice-color-saved {
+	width: 9px;
+	height: 9px;
 	margin: 7.5px;
 }
 

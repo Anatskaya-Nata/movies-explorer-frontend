@@ -10,6 +10,7 @@ const SavedCardList = (props) => {
 				return (
 					<li key={props.key}>
 						<MoviesCard
+							name='saved'
 							link={props.link}
 							title={props.title}
 							item={props.item}

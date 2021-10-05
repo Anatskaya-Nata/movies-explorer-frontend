@@ -44,6 +44,12 @@
 	color: #ffffff;
 	padding: 0;
 }
+
+.signform__button:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
+
 .signform__button_reg {
 	margin: 157px auto 0;
 }
@@ -84,6 +90,12 @@
 .signform__bottom_link {
 	color: #4285f4;
 	margin: 0;
+	z-index: 10;
+}
+
+.signform__bottom_link:hover {
+	cursor: pointer;
+	opacity: 0.8;
 }
 
 .signform__bottom_link-pro {
@@ -100,13 +112,23 @@
 	}
 
 	.signform__top {
+		width: 396px;
 		align-items: flex-start;
-		margin: 232px auto 40px;
+		margin: 232px 0 40px;
 	}
 
 	.signform__top_pro {
 		align-items: center;
 		margin: 236px auto 96px;
+	}
+
+	.signform__top_reg {
+		align-items: flex-start;
+		margin: 232px 0 40px 0;
+	}
+
+	.signform__top_log {
+		margin-left: 0;
 	}
 
 	.signform__title {
@@ -121,6 +143,11 @@
 		width: 396px;
 		font-size: 14px;
 		line-height: 16.94px;
+	}
+
+	.signform__button:hover {
+		cursor: pointer;
+		opacity: 0.8;
 	}
 
 	.signform__button_reg {
@@ -160,12 +187,22 @@
 	}
 
 	.signform__top {
-		margin: 70px auto 40px;
+		width: 396px;
+		margin: 70px 0 40px;
 	}
 
 	.signform__top_pro {
 		align-items: center;
 		margin: 74px auto 123px;
+	}
+
+	.signform__top_reg {
+		align-items: flex-start;
+		margin-left: 0;
+	}
+
+	.signform__top_log {
+		margin-left: 0;
 	}
 
 	.signform__bottom_block {

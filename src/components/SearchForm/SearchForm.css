@@ -51,6 +51,11 @@
 	height: 18px;
 }
 
+.movies__searcher_button:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
+
 @media screen and (min-width: 768px) {
 	.movies__searcher_form {
 		align-items: center;

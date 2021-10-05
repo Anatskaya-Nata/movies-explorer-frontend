@@ -7,10 +7,11 @@ import { cardsList } from '../Constants'
 const MoviesCardList = (props) => {
 	return (
 		<ul className='movies__gallary'>
-			{cardsList.map((props) => {
+			{cardsList.map((props, name) => {
 				return (
 					<li key={props.key}>
 						<MoviesCard
+							name={name}
 							link={props.link}
 							title={props.title}
 							item={props.item}
