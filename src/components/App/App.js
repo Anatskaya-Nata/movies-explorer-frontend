@@ -32,10 +32,12 @@ function App() {
 					</Route>
 					<Route path='/saved-movies'>
 						<Header name='menu' />
+						<Menu />
 						<SavedMovies />
 					</Route>
 					<Route path='/profile'>
 						<Header name='menu' />
+						<Menu />
 						<Profile />
 					</Route>
 					<Route path='/signup'>

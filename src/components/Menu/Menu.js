@@ -37,13 +37,12 @@ function Menu(props) {
 				</NavLink>
 			</nav>
 
-			<div className='header__menu_aсс'>
-				<Link to='/profile'>
-					{' '}
+			<Link to='/profile'>
+				<div className='header__menu_aсс'>
 					<img src={itemAcc} alt='Значок' className='header__menu_acc_item' />
-				</Link>
-				<div className='header__menu_acc_text'> Аккаунт</div>
-			</div>
+					<div className='header__menu_acc_text'> Аккаунт</div>
+				</div>
+			</Link>
 		</nav>
 	)
 }
