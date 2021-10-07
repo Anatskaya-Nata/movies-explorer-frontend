@@ -10,6 +10,10 @@
 	justify-items: stretch;
 }
 
+.movies__gallary_item {
+	list-style-type: none;
+}
+
 @media screen and (min-width: 768px) {
 	.movies__gallary {
 		grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));

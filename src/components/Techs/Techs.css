@@ -1,3 +1,8 @@
+.section__techs {
+	background-color: #272727;
+	padding-bottom: 70px;
+}
+
 .section__article {
 	display: flex;
 	flex-direction: column;
@@ -43,7 +48,7 @@
 	grid-template-rows: 57px 3fr;
 	grid-gap: 10px;
 	grid-auto-rows: 57px;
-	margin: 0 auto 70px auto;
+	margin: 0 auto 0 auto;
 }
 
 .section__block_techs {
@@ -62,6 +67,10 @@
 }
 
 @media screen and (min-width: 768px) {
+	.section__techs {
+		padding-bottom: 90px;
+	}
+
 	.section__article {
 		justify-content: center;
 	}
@@ -90,6 +99,10 @@
 }
 
 @media screen and (min-width: 1280px) {
+	.section__techs {
+		padding-bottom: 100px;
+	}
+
 	.section__head_techs {
 		padding-top: 100px;
 		margin: 0 0 90px 0;
@@ -111,7 +124,7 @@
 		grid-template-rows: 60px;
 		grid-gap: 10px;
 		grid-auto-rows: 60px;
-		margin: 0 auto 100px auto;
+		margin: 0 auto 0 auto;
 	}
 
 	.section__block_text-techs {

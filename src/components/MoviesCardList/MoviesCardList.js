@@ -9,7 +9,7 @@ const MoviesCardList = (props) => {
 		<ul className='movies__gallary'>
 			{cardsList.map((props, name) => {
 				return (
-					<li key={props.key}>
+					<li className='movies__gallary_item' key={props.key}>
 						<MoviesCard
 							name={name}
 							link={props.link}

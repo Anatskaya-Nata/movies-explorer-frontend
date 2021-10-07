@@ -14,8 +14,8 @@ function Main(props) {
 			<Promo />
 			<NavTab />
 			<AboutProject />
-			<AboutMe />
 			<Techs />
+			<AboutMe />
 		</main>
 	)
 }
