@@ -1,0 +1,217 @@
+.header__logo_pro {
+	display: none;
+}
+
+.signform {
+	padding: 0 30px;
+}
+.signform__reg {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.signform__log {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.signform__top {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 56px auto 80px;
+}
+
+.signform__title {
+	font-weight: 500;
+	font-size: 24px;
+	line-height: 29px;
+	color: #ffffff;
+	margin: 50px 0 0 0;
+}
+
+.signform__button {
+	width: 260px;
+	height: 45px;
+	background-color: #4285f4;
+	border-radius: 3px;
+	border: none;
+	font-weight: 500;
+	font-size: 12px;
+	line-height: 15px;
+	color: #ffffff;
+	padding: 0;
+}
+
+.signform__button:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.signform__button_reg {
+	margin: 157px auto 0;
+}
+
+.signform__button_log {
+	margin: 267px auto 0;
+}
+
+.signform__button_pro {
+	display: none;
+}
+
+.signform__bottom_block {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 15px;
+	margin: 14px auto 30px;
+}
+
+.signform__bottom_block-pro {
+	flex-direction: column;
+	align-items: center;
+	margin: 379px auto 40px;
+}
+
+.signform__bottom_text {
+	color: #8b8b8b;
+	margin: 0 7px 0 0;
+}
+
+.signform__bottom_text-pro {
+	margin: 0 0 16px 0;
+}
+
+.signform__bottom_link {
+	color: #4285f4;
+	margin: 0;
+	z-index: 10;
+}
+
+.signform__bottom_link:hover {
+	cursor: pointer;
+	opacity: 0.8;
+}
+
+.signform__bottom_link-pro {
+	color: #ee3465;
+}
+
+@media screen and (min-width: 768px) {
+	.signform {
+		padding: 0 186px;
+	}
+
+	.signform__pro {
+		padding: 0 179px;
+	}
+
+	.signform__top {
+		width: 396px;
+		align-items: flex-start;
+		margin: 232px 0 40px;
+	}
+
+	.signform__top_pro {
+		align-items: center;
+		margin: 236px auto 96px;
+	}
+
+	.signform__top_reg {
+		align-items: flex-start;
+		margin: 232px 0 40px 0;
+	}
+
+	.signform__top_log {
+		margin-left: 0;
+	}
+
+	.signform__title {
+		margin: 40px 0 0 0;
+	}
+
+	.signform__title_pro {
+		margin: 0;
+	}
+
+	.signform__button {
+		width: 396px;
+		font-size: 14px;
+		line-height: 16.94px;
+	}
+
+	.signform__button:hover {
+		cursor: pointer;
+		opacity: 0.8;
+	}
+
+	.signform__button_reg {
+		margin: 69px auto 0;
+	}
+
+	.signform__button_log {
+		margin: 179px auto 0;
+	}
+
+	.signform__bottom_block {
+		font-size: 14px;
+		line-height: 16.94px;
+		margin: 16px auto 232px;
+	}
+
+	.signform__bottom_block-pro {
+		margin: 210px auto 269px;
+	}
+
+	.signform__bottom_text {
+		margin: 0 6px 0 0;
+	}
+
+	.signform__bottom_text-pro {
+		margin: 0 0 16px 0;
+	}
+}
+
+@media screen and (min-width: 1280px) {
+	.signform {
+		padding: 0 442px;
+	}
+
+	.signform__pro {
+		padding: 0 435px;
+	}
+
+	.signform__top {
+		width: 396px;
+		margin: 70px 0 40px;
+	}
+
+	.signform__top_pro {
+		align-items: center;
+		margin: 74px auto 123px;
+	}
+
+	.signform__top_reg {
+		align-items: flex-start;
+		margin-left: 0;
+	}
+
+	.signform__top_log {
+		margin-left: 0;
+	}
+
+	.signform__bottom_block {
+		font-size: 14px;
+		line-height: 16.94px;
+		margin: 16px auto 70px;
+	}
+
+	.signform__bottom_block-pro {
+		margin: 268px auto 102px;
+	}
+}
