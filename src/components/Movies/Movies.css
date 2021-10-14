@@ -19,6 +19,10 @@
 	margin: 50px auto 80px auto;
 }
 
+.movies__button-more_hidden {
+	display: none;
+}
+
 /*.header__buttonblock {
 	display: none;
 }*/

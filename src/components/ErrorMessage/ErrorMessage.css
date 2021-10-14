@@ -1,15 +1,24 @@
-.error-message {
-	margin-top: 6px;
+.error__message {
+	margin: 6px 0 0 20px;
 	font-weight: normal;
 	font-size: 10px;
 	line-height: 12px;
 	color: #ff4062;
 }
 
-.error-message_hide {
+.error__message_profile {
+	margin: 6px 0 6px 0;
+	text-align: end;
+}
+
+.error__message_log-reg {
+	margin: 6px 0 6px 0;
+}
+
+/*.error-message_hide {
 	display: none;
 }
 
 .error-message_show {
 	display: block;
-}
+}*/

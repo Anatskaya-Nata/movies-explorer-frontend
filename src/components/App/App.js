@@ -1,9 +1,7 @@
 import React from 'react'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, useHistory } from 'react-router-dom'
 import './App.css'
-//import { CurrentUserContext } from '../../contexts/CurrentUserContext'
-//import { CardContext } from '../../contexts/CardContext'
-
+import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import Header from '../Header/Header'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
@@ -11,125 +9,155 @@ import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Main from '../Main/Main'
-import EnterBlock from '../EnterBlock.css/EnterBlock'
+import EnterBlock from '../EnterBlock/EnterBlock'
 import Menu from '../Menu/Menu'
 import Footer from '../Footer/Footer'
 import PageNotFound from '../PageNotFound/PageNotFound'
 import MenuResult from '../MenuResult/MenuResult'
-import moviesApi from '../../utils/MoviesApi'
+import * as auth from '../../utils/auth'
 
-import { SHORT_MOVIE_DURATION } from '../../utils/Constants'
+//import mainApi from '../../utils/MainApi'
+//import moviesApi from '../../utils/MoviesApi'
+
+//import { SHORT_MOVIE_DURATION } from '../../utils/Constants'
 
 /*moviesApi.getMovies().then((result) => {
 	console.log(result)
 })*/
 
 function App() {
-	const [isSearching, setIsSearching] = React.useState(false)
-	const [isEmptySearch, setIsEmptySearch] = React.useState(false)
-	//const [movies, setMovies] = React.useState([])
-	const [foundMovies, setFoundMovies] = React.useState([])
-	const [isShortMovies, setIsShortMovies] = React.useState(false)
+	const [currentUser, setCurrentUser] = React.useState({})
+	const [loggedIn, setLoggedIn] = React.useState(false)
+	const [email, setEmail] = React.useState('')
+	const [name, setName] = React.useState('')
+	const history = useHistory()
+	const [infosignMessage, setInfosignMessage] = React.useState({
+		text: '',
+	})
 
-	const [initialMovies, setInitialMovies] = React.useState([])
-	//	const [requestCards, setRequestCards] = React.useState(new Set())
+	/*const [isShowMenu, setIsShowMenu] = React.useState('.header__menu_type-closed')
 
-	React.useEffect(() => {
-		moviesApi
-			.getInitialCards()
-			.then((cardData) => {
-				setInitialMovies(cardData)
+	if (isShowMenu === 'header__menu_type-closed') {
+		setIsShowMenu('header__menu_type-opend')
+	} else {
+		setIsShowMenu('header__menu_type-closed')
+	}*/
+
+	/*React.useEffect(() => {
+		mainApi
+			.getUserData()
+			.then((userData) => {
+				setCurrentUser(userData.data)
 			})
 			.catch((err) => console.log(err))
-	}, [])
+	}, [loggedIn])*/
 
-	// Переключение чекбокса для поиска
-	function handleToggleCheckbox() {
-		setIsShortMovies(!isShortMovies)
+	function handleLogIn() {
+		setLoggedIn(true)
+	}
+	//Проверить токен
+	React.useEffect(() => {
+		const jwt = localStorage.getItem('jwt')
+		console.log('попала или нет')
+
+		if (jwt) {
+			console.log(jwt)
+			auth.getContent(jwt).then((res) => {
+				setLoggedIn(true)
+				console.log(res.data.email)
+				setEmail(res.data.email)
+				setEmail(res.data.name)
+				history.push('/')
+			})
+		}
+	}, [history])
+
+	function handleSubmitLogin(password, email) {
+		auth
+			.authorize(escape(password), email)
+
+			.then((data) => {
+				console.log(data)
+				if (data.token) {
+					setEmail(email)
+					setName(name)
+					handleLogIn()
+					history.push('/')
+				}
+			})
+
+			.catch((err) => {
+				setInfosignMessage({
+					text: 'Что-то пошло не так! Попробуйте ещё раз.',
+				})
+				//setInfoTooltipOpen(true)
+			})
 	}
 
-	// Функция поиска фильмов movies
-	function movieSearch(searchBar) {
-		if (isShortMovies) {
-			const shortMovie = initialMovies.filter((movie) => {
-				return (
-					movie.duration <= SHORT_MOVIE_DURATION &&
-					movie.nameRU.toLowerCase().includes(searchBar.toLowerCase())
+	function handleSubmitRegister(name, password, email) {
+		auth
+			.register(escape(password), name, email)
+			.then(() => {
+				setInfosignMessage(
+					{ text: 'Вы успешно зарегистрировались!' },
+
+					history.push('/login'),
 				)
 			})
-			setFoundMovies(shortMovie)
-		} else {
-			const foundMovie = initialMovies.filter((movie) => {
-				return movie.nameRU.toLowerCase().includes(searchBar.toLowerCase())
+			.catch((err) => {
+				console.log(err.message)
+				setInfosignMessage({
+					text: 'Что-то пошло не так! Попробуйте ещё раз.',
+				})
 			})
-			return setFoundMovies(foundMovie)
-		}
+		/*.finally(() => {
+				setInfoTooltipOpen(true)
+			})*/
 	}
 
-	// показ сообщениz о неудачном поиске
-	function showEmptySearchMsg() {
-		setIsEmptySearch(true)
-	}
-	// имитация загрузки
-	function startPreloader() {
-		setIsSearching(true)
-		setTimeout(async () => {
-			setIsSearching(false)
-		}, 100)
-	}
 	return (
-		//<CurrentUserContext.Provider value={currentUser}>
-		//<CardContext.Provider value={cards}>
-		<div className='App'>
-			<div className='page'>
-				<Switch>
-					<Route exact path='/'>
-						<Header name='promo'>
-							<EnterBlock />
-						</Header>
-						<Main />
-					</Route>
-					<Route path='/movies'>
-						<Header name='menu' />
-						<Menu />
-						<Movies
-							startPreloader={startPreloader}
-							isSearching={isSearching}
-							isVisible={isEmptySearch}
-							showEmptySearchMsg={showEmptySearchMsg}
-							movieSearch={movieSearch}
-							cards={foundMovies}
-							handleToggleCheckbox={handleToggleCheckbox}
-						/>
-					</Route>
-					<Route path='/saved-movies'>
-						<Header name='menu' />
-						<Menu />
-						<SavedMovies />
-					</Route>
-					<Route path='/profile'>
-						<Header name='menu' />
-						<Menu />
-						<Profile />
-					</Route>
-					<Route path='/signup'>
-						<Register />
-					</Route>
-					<Route path='/signin'>
-						<Login />
-					</Route>
-					<Route path='/temp'>
-						<MenuResult />
-					</Route>
-					<Route path='*'>
-						<PageNotFound />
-					</Route>
-				</Switch>
-				<Footer />
+		<CurrentUserContext.Provider value={currentUser}>
+			<div className='App'>
+				<div className='page'>
+					<Switch>
+						<Route exact path='/'>
+							<Header name='promo'>
+								<EnterBlock />
+							</Header>
+							<Main />
+						</Route>
+						<Route path='/movies'>
+							<Header name='menu' />
+							<Menu /*isShowMenu={isShowMenu} */ />
+							<Movies />
+						</Route>
+						<Route path='/saved-movies'>
+							<Header name='menu' />
+							<Menu />
+							<SavedMovies />
+						</Route>
+						<Route path='/profile'>
+							<Header name='menu' />
+							<Menu />
+							<Profile email={email} name={name} />
+						</Route>
+						<Route path='/signup'>
+							<Register onRegister={handleSubmitRegister} errorTex={infosignMessage} />
+						</Route>
+						<Route path='/signin'>
+							<Login onLogin={handleSubmitLogin} />
+						</Route>
+						<Route path='/temp'>
+							<MenuResult />
+						</Route>
+						<Route path='*'>
+							<PageNotFound />
+						</Route>
+					</Switch>
+					<Footer />
+				</div>
 			</div>
-		</div>
-		//</CardContext.Provider>
-		//</CurrentUserContext.Provider>
+		</CurrentUserContext.Provider>
 	)
 }
 

@@ -2,13 +2,7 @@ import './ErrorMessage.css'
 
 const ErrorMessage = (props) => {
 	return (
-		<div
-			className={`error__message${
-				props.isErrorVisible ? ' error__message_show' : ' error__message_hide'
-			}`}
-		>
-			{props.text}
-		</div>
+		<div className={`error__message error__message_${props.name}`}>{props.errorText}</div>
 	)
 }
 

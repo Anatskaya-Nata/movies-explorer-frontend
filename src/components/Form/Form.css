@@ -45,6 +45,10 @@
 	padding: 0;
 }
 
+.signform__button_disabled {
+	background-color: #2f2f2f;
+}
+
 .signform__button:hover {
 	cursor: pointer;
 	opacity: 0.8;
@@ -70,6 +74,10 @@
 	font-size: 12px;
 	line-height: 15px;
 	margin: 14px auto 30px;
+}
+
+.signform__bottom_container {
+	text-decoration: none;
 }
 
 .signform__bottom_block-pro {
