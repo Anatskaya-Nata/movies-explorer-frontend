@@ -63,7 +63,12 @@
 }
 
 .signform__button_pro {
-	display: none;
+	height: 15px;
+	background-color: #202020;
+	border-radius: none;
+	border: none;
+	margin: 379px auto 0;
+	
 }
 
 .signform__bottom_block {
@@ -83,7 +88,7 @@
 .signform__bottom_block-pro {
 	flex-direction: column;
 	align-items: center;
-	margin: 379px auto 40px;
+	margin: 16px auto 40px;
 }
 
 .signform__bottom_text {
@@ -92,7 +97,8 @@
 }
 
 .signform__bottom_text-pro {
-	margin: 0 0 16px 0;
+	/*margin: 0 0 16px 0;*/
+	display: none;
 }
 
 .signform__bottom_link {
@@ -153,6 +159,17 @@
 		line-height: 16.94px;
 	}
 
+	.signform__button_pro {
+		font-size: 13px;
+		line-height: 15.73px;
+		width: 410px;
+		height: 16px;
+		background-color: #202020;
+		border-radius: none;
+		border: none;
+		/*margin: 220px auto 0;*/
+	}
+
 	.signform__button:hover {
 		cursor: pointer;
 		opacity: 0.8;
@@ -173,16 +190,13 @@
 	}
 
 	.signform__bottom_block-pro {
-		margin: 210px auto 269px;
+		margin: 16px auto 269px;
 	}
 
 	.signform__bottom_text {
 		margin: 0 6px 0 0;
 	}
 
-	.signform__bottom_text-pro {
-		margin: 0 0 16px 0;
-	}
 }
 
 @media screen and (min-width: 1280px) {
@@ -213,6 +227,10 @@
 		margin-left: 0;
 	}
 
+	.signform__button_pro {
+		margin: 220px auto 0;
+	}
+
 	.signform__bottom_block {
 		font-size: 14px;
 		line-height: 16.94px;
@@ -220,6 +238,11 @@
 	}
 
 	.signform__bottom_block-pro {
-		margin: 268px auto 102px;
+		margin: 16px auto 70px;
+	}
+
+	.signform__bottom_text-pro {
+		display: none;
+
 	}
 }

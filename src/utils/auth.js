@@ -1,5 +1,6 @@
-export const BASE_URL = 'http://api.movies.diploma.nomoredomains.monster'
+//export const BASE_URL = 'http://api.movies.diploma.nomoredomains.monster'
 //export const BASE_URL = 'http://localhost:3000'
+export const BASE_URL = 'http://localhost:3001'
 
 const checkResponse = (res) => {
 	if (!res.ok) {
@@ -8,33 +9,33 @@ const checkResponse = (res) => {
 	return res.json()
 }
 
-export const register = (name, password, email) =>
+export const register = (name, email, password) =>
 	fetch(`${BASE_URL}/signup`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ name, password, email }),
+		body: JSON.stringify({ name, email, password }),
 	})
 		.then(checkResponse)
 		.then((res) => {
 			return res
 		})
 
-export const authorize = (password, email) => {
+export const authorize = (email, password) => {
 	return fetch(`${BASE_URL}/signin`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
 		},
-		body: JSON.stringify({ password, email }),
+		body: JSON.stringify({ email, password }),
 	})
 		.then(checkResponse)
 		.then((data) => {
-			console.log(data)
+			//console.log(data)
 			if (data.token) {
 				localStorage.setItem('jwt', data.token)
-				console.log(localStorage)
+			//	console.log(localStorage)
 				return data
 			} else {
 				return
@@ -52,6 +53,6 @@ export const getContent = (token) =>
 	})
 		.then(checkResponse)
 		.then((data) => {
-			console.log(data)
+			console.log(data) // получили юзера
 			return data
 		})

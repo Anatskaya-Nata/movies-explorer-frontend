@@ -119,6 +119,7 @@ function FormForSign(props) {
 					type='password'
 					name='password'
 					placeholder='Пароль'
+					//autocomplete='current-password'
 					required
 					minLength='2'
 					maxLength='30'

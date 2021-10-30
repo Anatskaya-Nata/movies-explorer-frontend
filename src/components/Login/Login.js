@@ -14,6 +14,7 @@ function Login(props) {
 				button_title='Войти'
 				bottom_text='Еще не зарегистрированы?'
 				onSubmit={submitForm}
+				errorText={props.errorText}
 				//bottom_link='Регистрация'
 				link={
 					<Link to='/signup' className='signform__bottom_container'>

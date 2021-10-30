@@ -23,7 +23,7 @@ function Form(props) {
 			<ErrorMessage
 				errorText={props.errorText}
 				onChange={handleChangeText}
-				value={text || ' '}
+				value={text }
 			/>
 			<button
 				className={`signform__button signform__button_${props.name} signform__button

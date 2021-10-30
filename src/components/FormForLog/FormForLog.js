@@ -52,6 +52,7 @@ function FormForLog(props) {
 			valid={!formValid}
 			onSubmit={handleSubmit}
 			link={props.link}
+			errorText={props.errorText}
 		>
 			<div className={`signform__input_block signform__input_block-${props.name}`}>
 				<h3 className={`signform__input_subtitle signform__input_subtitle-${props.name}`}>
@@ -66,6 +67,7 @@ function FormForLog(props) {
 					minLength='2'
 					maxLength='30'
 					value={email}
+			
 					//defaultValue='pochta@yandex.ru '
 					onChange={handleChangeEmail}
 					className={`signform__input signform__input_mail signform__input_${props.name}`}
@@ -84,6 +86,7 @@ function FormForLog(props) {
 					required
 					minLength='2'
 					maxLength='30'
+					//autoComplete="off"
 					value={password}
 					///defaultValue='123456'
 					onChange={handleChangePassword}

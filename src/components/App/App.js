@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom'
 import './App.css'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
@@ -6,6 +6,7 @@ import Header from '../Header/Header'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
+
 import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Main from '../Main/Main'
@@ -15,9 +16,8 @@ import Footer from '../Footer/Footer'
 import PageNotFound from '../PageNotFound/PageNotFound'
 import MenuResult from '../MenuResult/MenuResult'
 import * as auth from '../../utils/auth'
+import mainApi from '../../utils/MainApi'
 
-//import mainApi from '../../utils/MainApi'
-//import moviesApi from '../../utils/MoviesApi'
 
 //import { SHORT_MOVIE_DURATION } from '../../utils/Constants'
 
@@ -28,29 +28,57 @@ import * as auth from '../../utils/auth'
 function App() {
 	const [currentUser, setCurrentUser] = React.useState({})
 	const [loggedIn, setLoggedIn] = React.useState(false)
-	const [email, setEmail] = React.useState('')
-	const [name, setName] = React.useState('')
+	//const [name, setName] = React.useState('')
+	//const [email, setEmail] = React.useState('')
+
+	const [infosignMessage, setInfosignMessage] = useState('')
 	const history = useHistory()
-	const [infosignMessage, setInfosignMessage] = React.useState({
-		text: '',
-	})
 
-	/*const [isShowMenu, setIsShowMenu] = React.useState('.header__menu_type-closed')
 
-	if (isShowMenu === 'header__menu_type-closed') {
-		setIsShowMenu('header__menu_type-opend')
-	} else {
-		setIsShowMenu('header__menu_type-closed')
-	}*/
-
-	/*React.useEffect(() => {
+	function getCurrentUser() {
+		const jwt = localStorage.getItem('jwt')
 		mainApi
-			.getUserData()
+			.getUserData(jwt)
 			.then((userData) => {
-				setCurrentUser(userData.data)
+				//console.log(userData)
+				if (userData) {
+					setCurrentUser(userData)
+					localStorage.setItem('currentUser', JSON.stringify(userData))
+					console.log(localStorage)
+				}
 			})
-			.catch((err) => console.log(err))
-	}, [loggedIn])*/
+			.catch((err) => {
+				console.log(err)
+				//localStorage.removeItem('jwt')
+				//localStorage.removeItem('currentUser')
+			})
+	}
+
+	function handleUpdateUser({ name, email }) {
+		mainApi
+			.setUserData({ name, email })
+			.then((newData) => {
+				console.log('newData')
+				setCurrentUser(newData)
+				setInfosignMessage('Данные профиля успешно обновлены')
+				
+			})
+			.catch((err) => {
+				console.log(`Ошибка при обновлении данных пользователя. ${err}`)
+			})
+			/*.finally(() => {
+				setIsPopupLoading(false)
+			})*/
+	}
+
+	function handleLogOut() {
+		setLoggedIn(false)
+		localStorage.removeItem('jwt')
+		//setEmail('')
+	
+		history.push('/')
+		console.log(localStorage)
+	}
 
 	function handleLogIn() {
 		setLoggedIn(true)
@@ -58,62 +86,57 @@ function App() {
 	//Проверить токен
 	React.useEffect(() => {
 		const jwt = localStorage.getItem('jwt')
-		console.log('попала или нет')
 
 		if (jwt) {
-			console.log(jwt)
+			//console.log(jwt)
 			auth.getContent(jwt).then((res) => {
 				setLoggedIn(true)
-				console.log(res.data.email)
-				setEmail(res.data.email)
-				setEmail(res.data.name)
+				getCurrentUser()
+				//console.log(res.data) //юзер
+				//setName(res.data.name)
+				//setEmail(res.data.email)
 				history.push('/')
 			})
 		}
-	}, [history])
+	}, [loggedIn, history])
 
-	function handleSubmitLogin(password, email) {
+	function handleSubmitLogin(email, password) {
 		auth
-			.authorize(escape(password), email)
+			.authorize(email, escape(password))
 
 			.then((data) => {
 				console.log(data)
 				if (data.token) {
-					setEmail(email)
-					setName(name)
+					getCurrentUser()
+					//setName(name)
+					//setEmail(email)
 					handleLogIn()
-					history.push('/')
+					history.push('/movies')
 				}
 			})
-
 			.catch((err) => {
-				setInfosignMessage({
-					text: 'Что-то пошло не так! Попробуйте ещё раз.',
-				})
-				//setInfoTooltipOpen(true)
+				setInfosignMessage('Что-то пошло не так! Попробуйте ещё раз.')
 			})
 	}
 
-	function handleSubmitRegister(name, password, email) {
+	function handleSubmitRegister(name, email, password) {
 		auth
-			.register(escape(password), name, email)
+			.register(name, email, escape(password))
 			.then(() => {
-				setInfosignMessage(
-					{ text: 'Вы успешно зарегистрировались!' },
-
-					history.push('/login'),
-				)
+				handleSubmitLogin(email, password)
+				setInfosignMessage(' ')
+				history.push('/movies')
 			})
 			.catch((err) => {
-				console.log(err.message)
-				setInfosignMessage({
-					text: 'Что-то пошло не так! Попробуйте ещё раз.',
-				})
+				setInfosignMessage('Что-то пошло не так! Попробуйте ещё раз.')
 			})
 		/*.finally(() => {
 				setInfoTooltipOpen(true)
 			})*/
 	}
+
+
+
 
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
@@ -139,13 +162,13 @@ function App() {
 						<Route path='/profile'>
 							<Header name='menu' />
 							<Menu />
-							<Profile email={email} name={name} />
+							<Profile onEditUser={handleUpdateUser} logOut={handleLogOut}/>
 						</Route>
 						<Route path='/signup'>
-							<Register onRegister={handleSubmitRegister} errorTex={infosignMessage} />
+							<Register onRegister={handleSubmitRegister} errorText={infosignMessage} />
 						</Route>
 						<Route path='/signin'>
-							<Login onLogin={handleSubmitLogin} />
+							<Login onLogin={handleSubmitLogin} errorText={infosignMessage}/>
 						</Route>
 						<Route path='/temp'>
 							<MenuResult />
