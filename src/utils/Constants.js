@@ -1,11 +1,10 @@
-export const MAX_WIDTH = 1280
-export const MEDIUM_WIDTH = 786
-export const MIN_WIDTH = 320
-export const MAX_WIDTH_INITIAL_CARDS = 12
-export const MEDIUM_WIDTH_INITIAL_CARDS = 8
-export const MIN_WIDTH_INITIAL_CARDS = 5
-export const MAX_WIDTH_MORE_CARDS = 4
-export const MEDIUM_WIDTH_MORE_CARDS = 3
-export const MIN_WIDTH_MORE_CARDS = 2
-export const SMALLEST_WIDTH_MORE_CARDS = 1
-export const SHORT_MOVIE_DURATION = 40
+export const MOVIES_API = {
+	URL: 'https://api.nomoreparties.co/beatfilm-movies',
+}
+
+export const filterMovies = (movie, searchBar) => {
+	if (movie.nameRU.toString().toLowerCase().includes(searchBar.toLowerCase())) {
+		return movie
+	}
+	return
+}

@@ -1,60 +1,106 @@
 import './Movies.css'
-import React, { useCallback } from 'react'
-
+import React from 'react'
+import moviesApi from '../../utils/MoviesApi'
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
-import moviesApi from '../../utils/MoviesApi'
+import { filterMovies } from '../../utils/Constants'
+import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
+import Preloader from '../Preloader/Preloader'
 
 function Movies(props) {
 	const [initialMovies, setInitialMovies] = React.useState([])
-	const [requestMovies, setRequestMovies] = React.useState(new Set())
+	const [isPreloaderShow, setPreloaderShow] = React.useState(false)
+	const [isErrorMessage, setIsErrorMessage] = React.useState(false)
+	const [shortMovieFilter, setShortMovieFilter] = React.useState(false)
 
 	React.useEffect(() => {
-		moviesApi
-			.getInitialCards()
-			.then(setInitialMovies)
+		const lastSavedMovies = localStorage.getItem('movies')
 
-			.catch((err) => console.log(err))
+		//console.log(localStorage.movies)
+		if (lastSavedMovies) {
+			setInitialMovies(JSON.parse(lastSavedMovies))
+		} else {
+			setInitialMovies([])
+		}
+		setShortMovieFilter(false)
 	}, [])
 
-	const handleSearchMovie = useCallback(
-		(request) => {
-			// eslint-disable-next-line no-unused-vars
-			const str = request.toLowerCase()
-			const set = new Set(requestMovies)
+	function handleDuration() {
+		const lastSavedMovies = JSON.parse(localStorage.getItem('movies'))
 
-			console.log(request)
+		if (!shortMovieFilter) {
+			const moviesFilter = lastSavedMovies.filter((movieCard) => movieCard.duration <= 55)
+			setInitialMovies(moviesFilter)
+		} else {
+			//setShortMovieFilter(shortMovieFilter)
+			setInitialMovies(lastSavedMovies)
+		}
+	}
 
-			initialMovies.forEach((item) => {
-				if (request) {
-					set.add(item)
-				}
-				console.log('Попали')
+	const handleCheckboxChange = () => {
+		setShortMovieFilter((Filter) => !Filter)
+		handleDuration()
+	}
+
+	function getInitialMovies(query) {
+		setInitialMovies([])
+		setPreloaderShow(true)
+		setIsErrorMessage(false)
+		moviesApi
+			.getInitialCards()
+
+			.then((movies) => {
+				const moviesCards = movies.filter((movie) => filterMovies(movie, query))
+				//console.log(query)
+				//console.log(movies)
+				console.log('массив карточек по запросу в поисковой стороке movies', moviesCards)
+				setInitialMovies(moviesCards)
+				localStorage.setItem('movies', JSON.stringify(moviesCards))
+				//localStorage.setItem('movies', JSON.stringify(movies))
+
+				//setShortMovieFilter(false)
 			})
-
-			setRequestMovies(set)
-		},
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[initialMovies],
-	)
-
+			.catch((err) => {
+				console.log(err)
+				//setIsErrorMessage(true)
+			})
+			.finally(() => {
+				setPreloaderShow(false)
+			})
+	}
+	//console.log(initialMovies)
 	return (
-		/*<div className='movies'>
-			<SearchForm
-				startPreloader={props.startPreloader}
-				showEmptySearchMsg={props.howEmptySearchMsg}
-				movieSearch={props.movieSearch}
-				handleToggleCheckbox={props.handleToggleCheckbox}
-				isShortMovies={props.isShortMovies}
-			/>
-			<MoviesCardList cards={props.cards} isVisible={props.isVisible} />
-		</div>*/
-
 		<div className='movies'>
-			<SearchForm onGetMovies={handleSearchMovie} />
-			<MoviesCardList movies={Array.from(requestMovies)} />
+			<SearchForm
+				getInitialMovies={getInitialMovies}
+				/*getInitialMovies={handleSearchMovie}*/
+				shortMovieFilter={props.shortMovieFilter}
+				onCheckboxChange={handleCheckboxChange}
+			/>
+
+			{isPreloaderShow && <Preloader />}
+			{initialMovies.length > 0 ? (
+				<MoviesCardList
+					location={props.location}
+					// карточки по запросу
+					initialMovies={initialMovies}
+					//initialMovies={props.initialMovies}
+					savedUserMovies={props.savedUserMovies}
+					onMovieDelete={props.onMovieDelete}
+					onMovieSave={props.onMovieSave}
+				/>
+			) : (
+				<NotFoundMovies isErrorMessage={isErrorMessage} />
+			)}
 		</div>
 	)
 }
 
 export default Movies
+
+/*  <button className='movies__button-more' type='button'>
+				Ещё
+			</button> */
+
+//<Preloader isShow={isPreloaderShow} />
+/*{isPreloaderShow && <Preloader />}*/

@@ -6,9 +6,7 @@ class MainApi {
 		if (!res.ok) {
 			return Promise.reject(`Ошибка: ${res.status}`)
 		}
-		console.log(res)
 		return res.json()
-		
 	}
 
 	getUserData() {
@@ -17,10 +15,11 @@ class MainApi {
 			headers: {
 				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
 			},
-		}).then(this._checkResponse) 
+		}).then(this._checkResponse)
 	}
 
 	setUserData(data) {
+		console.log(data)
 		return fetch(`${this._address}/users/me`, {
 			method: 'PATCH',
 			headers: {
@@ -29,15 +28,54 @@ class MainApi {
 			},
 			body: JSON.stringify({
 				name: data.name,
-				email: data.email
+				email: data.email,
 			}),
 		}).then(this._checkResponse)
-		
+	}
+
+	setMovies(newMovieData) {
+		console.log(newMovieData.country)
+		return fetch(`${this._address}/movies`, {
+			method: 'POST',
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				movieId: newMovieData.movieId,
+				country: newMovieData.country,
+				director: newMovieData.director,
+				duration: newMovieData.duration,
+				year: newMovieData.year,
+				description: newMovieData.description,
+				image: newMovieData.image,
+				trailer: newMovieData.trailer,
+				thumbnail: newMovieData.thumbnail,
+				nameRU: newMovieData.nameRU,
+				nameEN: newMovieData.nameEN,
+			}),
+		}).then(this._checkResponse)
+	}
+
+	getSavedMovies() {
+		return fetch(`${this._address}/movies`, {
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+			},
+		}).then(this._checkResponse)
+	}
+
+	deleteCard(id) {
+		return fetch(`${this._address}/movies/${id}`, {
+			method: 'DELETE',
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+				'Content-Type': 'application/json',
+			},
+		}).then(this._checkResponse)
 	}
 }
-
-
-
 
 const config = {
 	//address: 'https://api.movies.diploma.nomoredomains.monster',

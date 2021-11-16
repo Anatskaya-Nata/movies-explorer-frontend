@@ -16,6 +16,11 @@
 	flex-direction: column;
 	align-items: center;
 }
+.signform__pro {
+	flex-direction: column;
+	display: flex;
+	align-items: center;
+}
 
 .signform__top {
 	display: flex;
@@ -68,7 +73,6 @@
 	border-radius: none;
 	border: none;
 	margin: 379px auto 0;
-	
 }
 
 .signform__bottom_block {
@@ -196,7 +200,6 @@
 	.signform__bottom_text {
 		margin: 0 6px 0 0;
 	}
-
 }
 
 @media screen and (min-width: 1280px) {
@@ -243,6 +246,5 @@
 
 	.signform__bottom_text-pro {
 		display: none;
-
 	}
 }

@@ -68,6 +68,7 @@ function FormForSign(props) {
 			bottom_text={props.bottom_text}
 			bottom_link={props.bottom_link}
 			valid={!formValid}
+			//onSubmit={props.onSubmit}
 			onSubmit={handleSubmit}
 			errorText={props.errorText}
 			link={props.link}

@@ -1,72 +1,66 @@
 import './SearchForm.css'
-import React, { useState } from 'react'
+import React from 'react'
 import Lens from '../../images/text__COLOR_invisible.svg'
 import FilterCheckbox from '../FilterCheckbox/FilterCheckbox'
-import ErrorMessage from '../ErrorMessage/ErrorMessage'
 
 function SearchForm(props) {
-	const [findedMovieValue, setFindedMovieValue] = useState('')
-	const [error, setError] = React.useState('')
-	const [isFormValid, setFormValid] = React.useState(false)
+	const [searchQuery, setSearchQuery] = React.useState('')
+	const [placeholderMessage, setPlaceHolderMessage] = React.useState('Фильм')
+	//const [isPlaceholderShow, setPlaceholderShow] = React.useState(false)
+	const inputRef = React.createRef()
 
-	const searchButtonClassName = `${
-		isFormValid ? 'movies__searcher_button' : 'movies__searcher_button-disabled'
-	}`
-
-	function handleSearchMovie(e) {
-		setFindedMovieValue(e.target.value)
-		if (e.target.value.length === 0) {
-			setError('Нужно ввести ключевое слово')
-		} else {
-			setError('')
-		}
-		console.log(e.target.value.length)
-	}
-
-	function handleSubmit(e) {
+	const handleSubmit = (e) => {
 		e.preventDefault()
-		setError('')
-		props.onGetMovies(findedMovieValue)
-		setFindedMovieValue('')
+		// если строка без пробельных символов равна нулю устанавливаем фокус полю
+
+		if (searchQuery.trim().length === 0) {
+			setPlaceHolderMessage('Нужно ввести ключевое слово')
+			//setPlaceholderShow(true)
+			inputRef.current.focus()
+		} else {
+			props.getInitialMovies(searchQuery)
+
+			// очищаем поле формы при каждом сабмите
+			setSearchQuery('')
+		}
 	}
 
-	React.useEffect(() => {
-		if (findedMovieValue && !error) {
-			setFormValid(true)
-		} else {
-			setFormValid(false)
-		}
-	}, [findedMovieValue, error])
+	const handleChangeSearchInput = (e) => {
+		setSearchQuery(e.target.value)
+		handleEmptySearchRequest()
+	}
+
+	const handleEmptySearchRequest = () => {
+		//setPlaceholderShow(false)
+		setPlaceHolderMessage('Фильм')
+	}
 
 	return (
 		<div className='movies__searcher'>
-			<form className='movies__searcher_form'>
+			<form className='movies__searcher_form' onSubmit={handleSubmit}>
 				<div className='movies__searcher_input-container'>
 					<input
 						type='text'
 						name='movie'
-						required
-						placeholder='Фильм'
+						required=''
+						ref={inputRef}
+						value={searchQuery}
+						placeholder={placeholderMessage}
+						//className={`${isPlaceholderShow ? 'movies__searcher_input-text' : ''}`}
 						className='movies__searcher_input-text'
 						minLength='2'
 						maxLength='30'
-						value={findedMovieValue || ''}
-						onChange={handleSearchMovie}
+						onChange={handleChangeSearchInput}
 					/>
-					<ErrorMessage errorText={error} />
 				</div>
-
-				<button
-					className={searchButtonClassName}
-					type='submit'
-					onSubmit={props.handleSearchMovie}
-					disabled={!isFormValid}
-					onClick={handleSubmit}
-				>
+				<button className='movies__searcher_button' type='submit'>
 					<img src={Lens} alt='Лупа' className='movies__searcher_button-image' />
 				</button>
 			</form>
-			<FilterCheckbox />
+			<FilterCheckbox
+				shortMovieFilter={props.shortMovieFilter}
+				onCheckboxChange={props.onCheckboxChange}
+			/>
 		</div>
 	)
 }

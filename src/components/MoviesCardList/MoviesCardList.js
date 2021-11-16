@@ -1,116 +1,79 @@
 import './MoviesCardList.css'
 import React from 'react'
-//import Preloader from '../Preloader/Preloader'
-//import ErrorMessage from '../ErrorMessage/ErrorMessage'
+
 import MoviesCard from '../MoviesCard/MoviesCard'
-import { useWindowSize } from '../../utils/utils'
-import {
-	MAX_WIDTH,
-	MEDIUM_WIDTH,
-	MIN_WIDTH,
-	MAX_WIDTH_INITIAL_CARDS,
-	MEDIUM_WIDTH_INITIAL_CARDS,
-	MIN_WIDTH_INITIAL_CARDS,
-	MAX_WIDTH_MORE_CARDS,
-	MEDIUM_WIDTH_MORE_CARDS,
-	MIN_WIDTH_MORE_CARDS,
-	SMALLEST_WIDTH_MORE_CARDS,
-} from '../../utils/Constants'
 
-function MoviesCardList(props) {
-	const windowWidth = useWindowSize()
-	//const [isnVisible, setVisible] = React.useState(true)
-	const [initialCards, setInitialCards] = React.useState(0)
-	const [moreCards, setMoreCards] = React.useState(0)
-
-	//const [counter, setCounter] = React.useState(4)
-
-	//function showMoreMovies() {
-	//setCounter(counter + 4)
-	//}
-
-	function handleMoreBtnClick() {
-		setInitialCards(initialCards + moreCards)
-	}
+const MoviesCardList = (props) => {
+	const [countMovies, setCountMovies] = React.useState(0)
 
 	React.useEffect(() => {
-		if (windowWidth >= MAX_WIDTH) {
-			setInitialCards(MAX_WIDTH_INITIAL_CARDS)
-			setMoreCards(MAX_WIDTH_MORE_CARDS)
+		props.location === '/movies'
+			? actualResizeHandler()
+			: setCountMovies(props.initialMovies.length)
+	}, [props.initialMovies, props.location])
+
+	//console.log(props.initialMovies)
+	function actualResizeHandler() {
+		if (window.innerWidth > 1270) {
+			setCountMovies(12)
+		} else if (window.innerWidth > 750) {
+			setCountMovies(8)
+		} else {
+			setCountMovies(5)
 		}
-		if (windowWidth < MAX_WIDTH && windowWidth >= MEDIUM_WIDTH) {
-			setInitialCards(MAX_WIDTH_INITIAL_CARDS)
-			setMoreCards(MEDIUM_WIDTH_MORE_CARDS)
+	}
+	function addMoreMovies() {
+		if (window.innerWidth > 1250) {
+			setCountMovies(countMovies + 4)
+		} else {
+			setCountMovies(countMovies + 2)
 		}
-		if (windowWidth < MEDIUM_WIDTH && windowWidth > MIN_WIDTH) {
-			setInitialCards(MEDIUM_WIDTH_INITIAL_CARDS)
-			setMoreCards(MIN_WIDTH_MORE_CARDS)
-		}
-		if (windowWidth <= MIN_WIDTH) {
-			setInitialCards(MIN_WIDTH_INITIAL_CARDS)
-			setMoreCards(SMALLEST_WIDTH_MORE_CARDS)
-		}
-	}, [windowWidth])
+	}
+
+	const disableMoviesButton = React.useMemo(() => {
+		return countMovies >= props.initialMovies.length ? 'movies__button-more_hidden' : ''
+	}, [countMovies, props.initialMovies])
 
 	return (
-		<>
-			<section className='movies__gallary_container'>
-				{/*props.isSearching && <Preloader />*/}
-				{
-					/*props.cards.length === 0 ? (
-					<p
-						className={
-							props.isVisible
-								? 'movies__cardList_text'
-								: 'movies__cardList_text movies__cardList_text-hidden'
-						}
-					>
-						К сожалению, по данному запросу ничего не найдено :(
-					</p>
-				) : (*/
-					<ul className='movies__gallary'>
-						{props.movies.slice(0, initialCards).map((card, id) => {
-							return (
-								<li key={card.id || card._id} className='movies__gallary_item'>
-									<MoviesCard card={card} key={id} id={card._id} />
-								</li>
-							)
-						})}
-					</ul>
-				}
-			</section>
+		<section className='movies__gallary_container'>
+			<ul className='movies__gallary'>
+				{props.initialMovies.slice(0, countMovies).map((movie) => {
+					//	console.log(movie)
+
+					return (
+						<li className='movies__gallary_item' key={movie.id || movie._id}>
+							<MoviesCard
+								location={props.location}
+								onMovieSave={props.onMovieSave}
+								onMovieDelete={props.onMovieDelete}
+								savedUserMovies={props.savedUserMovies}
+								movie={movie}
+								/*	image={
+									props.location === '/saved-movies'
+										? props.movie.image
+										: `https://api.nomoreparties.co${movie.image.url}`
+								}*/
+								key={movie._id}
+							/>
+						</li>
+					)
+				})}
+			</ul>
 			<button
+				onClick={addMoreMovies}
 				className={
-					props.movies.length <= 12 || initialCards === props.movies.length
-						? 'movies__button-more_hidden'
-						: 'movies__button-more'
+					props.location === '/movies'
+						? `movies__button-more ${disableMoviesButton}`
+						: 'movies__button-more movies__button-more_hidden'
 				}
-				onClick={handleMoreBtnClick}
 			>
 				Ещё
 			</button>
-		</>
+		</section>
 	)
 }
 
 export default MoviesCardList
-
-/*<ul className='movies__gallary'>
-{cards.map((card) => {
-	console.log(card.image.url)
-	return (
-		<li className='movies__gallary_item' key={card.id}>
-			<MoviesCard
-				card={card}
-				/*name={props.name}
-				link={props.link}
-				title={props.title}
-				item={props.item}
-				time={props.time}
-			/>
-		</li>
-	)
-})}
-</ul>*/
-
-//const cardsVisible = cards.slice(0, 4)
+/*  <button className='movies__button-more' type='button'>
+				Ещё
+			</button> */

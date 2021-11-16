@@ -35,7 +35,7 @@ export const authorize = (email, password) => {
 			//console.log(data)
 			if (data.token) {
 				localStorage.setItem('jwt', data.token)
-			//	console.log(localStorage)
+				//	console.log(localStorage)
 				return data
 			} else {
 				return
@@ -43,7 +43,7 @@ export const authorize = (email, password) => {
 		})
 }
 
-export const getContent = (token) =>
+export const getUser = (token) =>
 	fetch(`${BASE_URL}/users/me`, {
 		method: 'GET',
 		headers: {

@@ -67,7 +67,6 @@ function FormForLog(props) {
 					minLength='2'
 					maxLength='30'
 					value={email}
-			
 					//defaultValue='pochta@yandex.ru '
 					onChange={handleChangeEmail}
 					className={`signform__input signform__input_mail signform__input_${props.name}`}

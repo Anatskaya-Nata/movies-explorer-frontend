@@ -15,10 +15,14 @@
 	margin: 6px 0 6px 0;
 }
 
-/*.error-message_hide {
+.error__message_pro {
+	margin: 10px auto 0 auto;
+}
+
+.error-message_hide {
 	display: none;
 }
 
-.error-message_show {
+/*.error-message_show {
 	display: block;
 }*/

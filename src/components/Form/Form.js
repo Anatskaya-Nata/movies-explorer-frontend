@@ -4,10 +4,10 @@ import headerLogo from '../../images/headerLogo.svg'
 import ErrorMessage from '../ErrorMessage/ErrorMessage'
 
 function Form(props) {
-	const [text, setText] = React.useState('')
-	function handleChangeText(e) {
+	//const [text, setText] = React.useState('')
+	/* function handleChangeText(e) {
 		setText(e.target.value)
-	}
+	}*/
 	return (
 		<form className={`signform signform__${props.name}`} onSubmit={props.onSubmit}>
 			<div className={`signform__top signform__top_${props.name}`}>
@@ -21,14 +21,16 @@ function Form(props) {
 
 			<div>{props.children}</div>
 			<ErrorMessage
+				name={props.name}
 				errorText={props.errorText}
-				onChange={handleChangeText}
-				value={text }
+				//onChange={handleChangeText}
+				//value={text}
 			/>
 			<button
 				className={`signform__button signform__button_${props.name} signform__button
-				 ${props.valid ? 'signform__button_disabled' : ''}`}
+				 ${props.valid ? `signform__button_disabled` : ''}`}
 				type='submit'
+				onClick={props.onClick}
 				disabled={props.valid}
 			>
 				{props.button_title}
@@ -44,6 +46,3 @@ function Form(props) {
 	)
 }
 export default Form
-/*<p className={`signform__bottom_link signform__bottom_link-${props.name}`}>
-{props.bottom_link}
-</p>*/

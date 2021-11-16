@@ -12,10 +12,6 @@
 	right: 0px;
 }
 
-.header__menu_type-closed {
-	display: none;
-}
-
 .header__menu_close-button {
 	background-color: #202020;
 	border: none;

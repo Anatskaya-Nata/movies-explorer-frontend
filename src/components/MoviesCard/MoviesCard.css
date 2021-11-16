@@ -47,6 +47,27 @@
 	background-image: url(../../images/icon__COLOR_rose.svg);
 }
 
+.movies__shot_delete {
+	border: none;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: #202020;
+}
+
+.movies__shot_delete:hover {
+	background-image: url(../../images/d1.svg);
+	background-position: center;
+	background-size: 20px 20px;
+	background-repeat: no-repeat;
+	border: none;
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background-color: #313131;
+	cursor: pointer;
+}
+
 .movies__shot_choice-color {
 	width: 10px;
 	height: 10px;
