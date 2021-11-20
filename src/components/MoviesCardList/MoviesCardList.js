@@ -38,7 +38,7 @@ const MoviesCardList = (props) => {
 		<section className='movies__gallary_container'>
 			<ul className='movies__gallary'>
 				{props.initialMovies.slice(0, countMovies).map((movie) => {
-					//	console.log(movie)
+					//console.log(movie)
 
 					return (
 						<li className='movies__gallary_item' key={movie.id || movie._id}>

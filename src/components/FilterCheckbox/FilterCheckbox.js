@@ -13,7 +13,7 @@ function FilterCheckbox(props) {
 			/>
 			<label htmlFor='check'>
 				<span className='checkbox_text'>
-					{props.shortMovieFilter ? 'Короткометражки' : 'Не короткометражки'}
+					{!props.shortMovieFilter ? 'Короткометражки' : 'Не короткометражки'}
 				</span>
 			</label>
 		</div>

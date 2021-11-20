@@ -24,12 +24,39 @@ function App() {
 	const [loggedIn, setLoggedIn] = React.useState(false)
 	const [infosignMessage, setInfosignMessage] = React.useState('')
 	const [isShowMenu, setIsShowMenu] = React.useState(false)
+	const history = useHistory()
 
 	/*function checkSavedMovie(movie) {
 		return (movie.isSaved = userMovies.some(
 			(userMovie) => userMovie.movieId === movie.id,
 		))
 	}*/
+
+	React.useEffect(() => {
+		if (loggedIn) {
+			// mainApi.setToken(localStorage.getItem("jwt"));
+			Promise.all([mainApi.getUserData(), mainApi.getSavedMovies()])
+				.then(([userData, moviesData]) => {
+					setCurrentUser(userData)
+					localStorage.setItem('currentUser', JSON.stringify(userData))
+
+					console.log('данные юзера при эффеете', userData.data._id)
+
+					const savedMoviesList = moviesData.data.filter(
+						(item) => item.owner === userData.data._id,
+					)
+
+					localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
+					setUserMovies(savedMoviesList)
+
+					console.log('карточки прогруженные с учетом ID', savedMoviesList)
+				})
+				.catch((err) => {
+					alert(err)
+					console.log(err)
+				})
+		}
+	}, [loggedIn])
 
 	const handleShowMenuClick = () => {
 		setIsShowMenu((isShowMenu) => !isShowMenu)
@@ -39,8 +66,6 @@ function App() {
 		setIsShowMenu(false)
 	}
 
-	const history = useHistory()
-
 	function handleError(error) {
 		console.log(error)
 	}
@@ -48,7 +73,7 @@ function App() {
 		setLoggedIn(true)
 	}*/
 
-	function getCurrentUser() {
+	/*	function getCurrentUser() {
 		const jwt = localStorage.getItem('jwt')
 
 		mainApi
@@ -67,7 +92,7 @@ function App() {
 				//localStorage.removeItem('jwt')
 				//localStorage.removeItem('currentUser')
 			})
-	}
+	}*/
 
 	//Проверить токен
 	React.useEffect(() => {
@@ -77,15 +102,17 @@ function App() {
 			//console.log(jwt)
 			auth.getUser(jwt).then((res) => {
 				setLoggedIn(true)
-				getCurrentUser()
+				//getCurrentUser()
+				setCurrentUser(res)
+
 				//console.log(res.data) //юзер
 				//setName(res.data.name)
 				//setEmail(res.data.email)
 
-				history.push('/')
+				//history.push('/')
 			})
 		}
-	}, [loggedIn, history])
+	}, [loggedIn])
 
 	function handleLogin(email, password) {
 		auth
@@ -96,6 +123,8 @@ function App() {
 				if (data.token) {
 					//getCurrentUser()
 					setInfosignMessage('')
+					setLoggedIn(true)
+
 					//setName(name)
 					//setEmail(email)
 					//handleLogIn()
@@ -140,17 +169,7 @@ function App() {
 			})
 	}
 
-	/*function handleMoviesSave(card) {
-		// Снова проверяем, есть ли уже лайк на этой карточке
-		const isLiked = card.likes.some(i => i._id === currentUser._id);
-		
-		// Отправляем запрос в API и получаем обновлённые данные карточки
-		api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-			setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-		});
-	} */
-
-	function handleMoviesSave(moviesData) {
+	/*function handleMoviesSave(moviesData) {
 		console.log(
 			'лайкнутая карточка, отправденная на добавление в фильмы юзера',
 			moviesData,
@@ -158,12 +177,33 @@ function App() {
 		mainApi
 			.setMovies(moviesData)
 			.then(() => {
-				getSavedMoviesCards()
+				getUserMovies()
 			})
 			.catch(handleError)
 	}
+*/
 
-	//  const isLiked = card.likes.some(i => i._id === currentUser._id);
+	function handleMoviesSave(movie) {
+		const jwt = localStorage.getItem('jwt')
+		mainApi
+			.setMovies(movie, jwt)
+			.then(() => {
+				getSavedMoviesCards()
+			})
+			.catch((err) => {
+				console.log(`Ошибка: ${err}`)
+			})
+	}
+
+	/*function getUserMovies(userMovies) {
+		//setUserMovies([...newMovie.data, ...userMovies])
+		console.log('массив карточек юзера, пришедших из компаса', userMovies)
+		const savedMoviesList = userMovies.data.filter(
+			(item) => item.owner === currentUser.data._id,
+		)
+		localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
+		setUserMovies(savedMoviesList)
+	}*/
 
 	function getSavedMoviesCards() {
 		const jwt = localStorage.getItem('jwt')
@@ -197,8 +237,10 @@ function App() {
 	function removeSavedMovie(id) {
 		mainApi
 			.deleteCard(id)
-			.then((res) => {
+			.then(() => {
 				getSavedMoviesCards()
+				//getUserMovies()
+				setUserMovies(userMovies)
 			})
 			.catch(handleError)
 	}
@@ -213,30 +255,6 @@ function App() {
 
 		console.log(localStorage)
 	}
-
-	/*const handleEditAvatarClick = () => {
-		setisEditAvatarPopupOpen((isEditAvatarPopupOpen) => !isEditAvatarPopupOpen)
-	}*/
-
-	/*React.useEffect(() => {
-		const jwt = localStorage.getItem('jwt')
-		if (jwt !== null) {
-			Promise.all([mainApi.getUserData(jwt), mainApi.getUserMovies(jwt)])
-				.then(([userData, savedMovies]) => {
-					localStorage.setItem('currentUser', JSON.stringify(userData))
-					setCurrentUser(userData)
-
-					const savedMoviesList = savedMovies.filter(
-						(item) => item.owner._id === userData._id,
-					)
-					localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
-					setUserMovies(savedMoviesList)
-				})
-				.catch((err) => {
-					console.log(err)
-				})
-		}
-	}, [loggedIn])*/
 
 	return (
 		<CurrentUserContext.Provider value={currentUser}>

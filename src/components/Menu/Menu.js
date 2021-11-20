@@ -48,7 +48,7 @@ function Menu(props) {
 				</NavLink>
 			</nav>
 
-			<Link to='/profile'>
+			<Link to='/profile' onClick={props.closeMenu}>
 				<div className='header__menu_aсс'>
 					<img src={itemAcc} alt='Значок' className='header__menu_acc_item' />
 					<div className='header__menu_acc_text'> Аккаунт</div>

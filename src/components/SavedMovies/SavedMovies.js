@@ -1,21 +1,25 @@
 import React from 'react'
 import SearchForm from '../SearchForm/SearchForm'
-import mainApi from '../../utils/MainApi'
+//import mainApi from '../../utils/MainApi'
 import Preloader from '../Preloader/Preloader'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
+//import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import { filterMovies } from '../../utils/Constants'
 import Header from '../Header/Header'
 import MenuButton from '../MenuButton/MenuButton'
 
 function SavedMovies(props) {
+	//const currentUser = React.useContext(CurrentUserContext)
 	const [initialSavedMovies, setInitialSavedMovies] = React.useState([])
 	const [isPreloaderShow, setPreloaderShow] = React.useState(false)
 	const [isErrorMessage, setIsErrorMessage] = React.useState(false)
 	const [shortMovieFilter, setShortMovieFilter] = React.useState(false)
+	//const [shortUserMovieFilter, setUserShortMovieFilter] = React.useState(false)
 
 	const handleCheckboxChange = () => {
 		setShortMovieFilter(!shortMovieFilter)
+		handleDuration()
 	}
 
 	/*const handleCheckboxChange = () => {
@@ -26,7 +30,31 @@ function SavedMovies(props) {
 		props.handleCheckboxChange()
 	}*/
 
+	console.log('YEE!', props.savedUserMovies)
+
 	function getInitialSavedMovies(query) {
+		setInitialSavedMovies(props.savedUserMovies)
+		setIsErrorMessage(false)
+		const savedMoviesCards = props.savedUserMovies.filter((movie) =>
+			filterMovies(movie, query),
+		)
+		setInitialSavedMovies(savedMoviesCards)
+	}
+
+	function handleDuration() {
+		if (!shortMovieFilter) {
+			const moviesFilter = props.savedUserMovies.filter(
+				(movieCard) => movieCard.duration <= 55,
+			)
+			setInitialSavedMovies(moviesFilter)
+		} else {
+			//setShortMovieFilter(shortMovieFilter)
+			setInitialSavedMovies(props.savedUserMovies)
+			setPreloaderShow(false)
+		}
+	}
+
+	/*function getInitialSavedMovies(query) {
 		setInitialSavedMovies([])
 		setIsErrorMessage(false)
 		if (props.loggedIn) {
@@ -44,14 +72,6 @@ function SavedMovies(props) {
 						(savedMovieCard) => savedMovieCard.duration <= 55,
 					)
 
-					/*	setInitialSavedMovies(
-						shortMovieFilter
-							? savedMoviesCards
-							: savedMoviesCards.filter(
-									(savedMovieCard) => savedMovieCard.duration <= 55,
-							  ),
-					)*/
-
 					setInitialSavedMovies(checkedMoviesCards)
 
 					console.log('работает ли фильтр', shortMovieFilter)
@@ -65,11 +85,8 @@ function SavedMovies(props) {
 					setPreloaderShow(false)
 				})
 		}
-	}
+	}*/
 
-	/*const savedMoviesList = savedMovies.filter((item) => item.owner._id === userData._id)
-	localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
-	setUserMovies(savedMoviesList)*/
 	return (
 		<div className='movies'>
 			<Header name='menu'>
@@ -103,3 +120,6 @@ function SavedMovies(props) {
 }
 
 export default SavedMovies
+/*initialMovies={
+	initialSavedMovies.length > 0 ? initialSavedMovies : props.savedUserMovies
+}*/

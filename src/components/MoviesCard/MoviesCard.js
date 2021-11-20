@@ -9,11 +9,13 @@ function MoviesCard(props) {
 	/*console.log(
 		'массив, сохраненных карточек,пришедший в saveMovies',
 		props.savedUserMovies,
-	)
-	console.log('карточка, на которую тыкаем', props.movie)*/
-	const isSavedMovie = props.savedUserMovies.some((i) => i.nameRU === props.movie.nameRU)
-	//console.log('карточки юзера, пришедшие из компаса', props.savedUserMovies)
+	)*/
+	/*const isSavedMovie = JSON.parse(localStorage.getItem('userMovies'))*/
 
+	//console.log('карточка, на которую тыкаем', props.movie.nameRU) ВИДИТ
+	const isSavedMovie = props.savedUserMovies.some((i) => i.nameRU === props.movie.nameRU)
+	//console.log('карточки юзера, пришедшие из Lockal', isSavedMovie)
+	console.log('карточки юзера, пришедшие c запроса', props.savedUserMovies)
 	/*const findQueryMovies = JSON.parse(localStorage.getItem('movies'))
 	console.log(localStorage)
 	const isSavedMovie = findQueryMovies.some((i) => i.nameRU === props.movie.nameRU)*/
@@ -25,7 +27,7 @@ function MoviesCard(props) {
 	}
 
 	const movieSaveButtonClassName = `${isSavedMovie && 'movies__shot_choice-active'}`
-
+	//console.log('что за страница сеучас', props.location)
 	function handleClickSavedMovie() {
 		if (isSavedMovie) {
 			console.log('карточка с сердечком?', isSavedMovie)
@@ -54,6 +56,7 @@ function MoviesCard(props) {
 
 				image: `https://api.nomoreparties.co${props.movie.image.url}`,
 				owner: props.movie.owner,
+				//isSaved: props.movie.isSaved,
 			})
 		}
 	}
@@ -88,6 +91,7 @@ function MoviesCard(props) {
 			</div>
 			<div className='movies__shot_info'>
 				<div className='movies__shot_title'>{props.movie.nameRU}</div>
+
 				{props.location === '/movies' ? (
 					<button
 						className={`movies__shot_choice ${movieSaveButtonClassName}`}
@@ -108,4 +112,30 @@ function MoviesCard(props) {
 }
 export default MoviesCard
 
-//src={`https://api.nomoreparties.co${props.movie.image.url}`}
+/*{props.location === '/movies' ? (
+	<button
+		className={`movies__shot_choice ${movieSaveButtonClassName}`}
+		type='button'
+		onClick={handleClickSavedMovie}
+	></button>
+) : (
+	<button
+		className='movies__shot_delete'
+		type='button'
+		onClick={handleClickDeleteMovie}
+	></button>
+
+
+
+
+
+
+				<button
+					className={`movies__shot_choice ${movieSaveButtonClassName}`}
+					type='button'
+					onClick={handleClickSavedMovie}
+				></button>
+
+
+
+)}*/
