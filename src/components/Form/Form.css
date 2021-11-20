@@ -20,6 +20,7 @@
 	flex-direction: column;
 	display: flex;
 	align-items: center;
+	padding: 0 20px;
 }
 
 .signform__top {
@@ -126,7 +127,7 @@
 	}
 
 	.signform__pro {
-		padding: 0 179px;
+		padding: 0 152px;
 	}
 
 	.signform__top {
@@ -208,7 +209,7 @@
 	}
 
 	.signform__pro {
-		padding: 0 435px;
+		padding: 0 365px;
 	}
 
 	.signform__top {

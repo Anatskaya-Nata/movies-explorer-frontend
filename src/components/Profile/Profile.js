@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react'
+import './Profile.css'
 //import FormForProfile from '../FormForProfile/FormForProfile'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import Form from '../Form/Form'
 import ErrorMessage from '../ErrorMessage/ErrorMessage'
 import { Link } from 'react-router-dom'
+import Header from '../Header/Header'
+import MenuButton from '../MenuButton/MenuButton'
 
 function Profile(props) {
 	const currentUser = React.useContext(CurrentUserContext)
@@ -91,62 +94,74 @@ function Profile(props) {
 	}, [name, email, currentUser.data.name, currentUser.data.email])
 
 	return (
-		<Form
-			name='pro'
-			title={`Привет, ${currentUser.data.name}!`}
-			button_title='Редактировать'
-			errorText={props.errorText}
-			valid={formValid}
-			onSubmit={handleSubmit}
-			link={
-				<Link to='/' className='signform__bottom_container' onClick={props.logOut}>
-					<p className='signform__bottom_link signform__bottom_link-pro'>
-						Выйти из аккаунта
-					</p>
-				</Link>
-			}
-		>
-			<ErrorMessage errorText={nameError} name={'profile'} />
-			<div className='signform__input_block signform__input_block-pro'>
-				<h3 className='signform__input_subtitle signform__input_subtitle-pro'>Имя</h3>
-				<input
-					id='log-name'
-					type='text'
-					name='name'
-					placeholder='Имя'
-					required
-					minLength='2'
-					maxLength='30'
-					//value={currentUser.data.name}
-					value={name || ''}
-					//defaultValue='Виталий '
-					onChange={handleChangeName}
-					disabled={!isInputDisabled}
-					className='signform__input signform__input_name signform__input_pro'
+		<div className='profile'>
+			{' '}
+			<Header name='menu'>
+				<MenuButton
+					showMenu={props.showMenu}
+					isShowMenu={props.isShowMenu}
+					closeMenu={props.closeMenu}
 				/>
-			</div>
+			</Header>
+			<Form
+				name='pro'
+				title={`Привет, ${currentUser.data.name}!`}
+				button_title='Редактировать'
+				errorText={props.errorText}
+				valid={formValid}
+				onSubmit={handleSubmit}
+				link={
+					<Link to='/' className='signform__bottom_container' onClick={props.logOut}>
+						<p className='signform__bottom_link signform__bottom_link-pro'>
+							Выйти из аккаунта
+						</p>
+					</Link>
+				}
+			>
+				<ErrorMessage errorText={nameError} name={'profile'} />
+				<div className='signform__input_block signform__input_block-pro'>
+					<h3 className='signform__input_subtitle signform__input_subtitle-pro'>Имя</h3>
+					<input
+						id='log-name'
+						type='text'
+						name='name'
+						placeholder='Имя'
+						required
+						minLength='2'
+						maxLength='30'
+						//value={currentUser.data.name}
+						value={name || ''}
+						//defaultValue='Виталий '
+						onChange={handleChangeName}
+						disabled={!isInputDisabled}
+						className='signform__input signform__input_name signform__input_pro'
+					/>
+				</div>
 
-			<div className='signform__input_block signform__input_block-pro'>
-				<h3 className='signform__input_subtitle signform__input_subtitle-pro'>E-mail</h3>
-				<input
-					id='log-input'
-					type='email'
-					name='mail'
-					placeholder='Email'
-					required
-					minLength='2'
-					maxLength='30'
-					//value={currentUser.data.email}
+				<div className='signform__input_block signform__input_block-pro'>
+					<h3 className='signform__input_subtitle signform__input_subtitle-pro'>
+						E-mail
+					</h3>
+					<input
+						id='log-input'
+						type='email'
+						name='mail'
+						placeholder='Email'
+						required
+						minLength='2'
+						maxLength='30'
+						//value={currentUser.data.email}
 
-					value={email || ''}
-					//defaultValue='pochta@yandex.ru| '
-					onChange={handleChangeEmail}
-					disabled={!isInputDisabled}
-					className='signform__input signform__input_mail signform__input_pro'
-				/>
-			</div>
-			<ErrorMessage errorText={emailError} name={'profile'} />
-		</Form>
+						value={email || ''}
+						//defaultValue='pochta@yandex.ru| '
+						onChange={handleChangeEmail}
+						disabled={!isInputDisabled}
+						className='signform__input signform__input_mail signform__input_pro'
+					/>
+				</div>
+				<ErrorMessage errorText={emailError} name={'profile'} />
+			</Form>
+		</div>
 	)
 }
 

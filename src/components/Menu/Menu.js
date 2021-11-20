@@ -6,8 +6,16 @@ import { NavLink, Link } from 'react-router-dom'
 
 function Menu(props) {
 	return (
-		<nav className='header__menu_type-opend'>
-			<button className='header__menu_close-button' type='button'>
+		<nav
+			className={`header__menu_type-opend-width header__menu_type-closed  ${
+				props.isShowMenu ? 'header__menu_type-opend' : ''
+			}`}
+		>
+			<button
+				className='header__menu_close-button'
+				type='button'
+				onClick={props.closeMenu}
+			>
 				<img src={closeButton} alt='Крестик' className='header__menu_close-item' />
 			</button>
 			<nav className='header__menu_text-block'>
@@ -16,6 +24,7 @@ function Menu(props) {
 					to='/'
 					activeClassName='header__menu_link_active'
 					className='header__menu_link'
+					onClick={props.closeMenu}
 				>
 					Главная
 				</NavLink>
@@ -24,6 +33,7 @@ function Menu(props) {
 					to='/movies'
 					activeClassName='header__menu_link_active'
 					className='header__menu_link'
+					onClick={props.closeMenu}
 				>
 					Фильмы
 				</NavLink>
@@ -32,6 +42,7 @@ function Menu(props) {
 					to='/saved-movies'
 					activeClassName='header__menu_link_active'
 					className='header__menu_link'
+					onClick={props.closeMenu}
 				>
 					Сохранённые фильмы
 				</NavLink>
@@ -48,3 +59,5 @@ function Menu(props) {
 }
 
 export default Menu
+
+//className={`popup popup_theme_${props.name} ${props.isOpen ? 'popup_active' : ''}`}

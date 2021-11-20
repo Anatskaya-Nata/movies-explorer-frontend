@@ -5,6 +5,8 @@ import Preloader from '../Preloader/Preloader'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
 import { filterMovies } from '../../utils/Constants'
+import Header from '../Header/Header'
+import MenuButton from '../MenuButton/MenuButton'
 
 function SavedMovies(props) {
 	const [initialSavedMovies, setInitialSavedMovies] = React.useState([])
@@ -12,32 +14,47 @@ function SavedMovies(props) {
 	const [isErrorMessage, setIsErrorMessage] = React.useState(false)
 	const [shortMovieFilter, setShortMovieFilter] = React.useState(false)
 
-	/*	const handleCheckboxChange = () => {
+	const handleCheckboxChange = () => {
 		setShortMovieFilter(!shortMovieFilter)
+	}
+
+	/*const handleCheckboxChange = () => {
+		setShortMovieFilter((shortMovieFilter) => !shortMovieFilter)
 	}*/
 
-	function handleCheckChange() {
+	/*function handleCheckChange() {
 		props.handleCheckboxChange()
-	}
+	}*/
 
 	function getInitialSavedMovies(query) {
 		setInitialSavedMovies([])
 		setIsErrorMessage(false)
 		if (props.loggedIn) {
+			console.log('проверить логгедИн на тру', props.loggedIn)
 			mainApi
 				.getSavedMovies()
 				.then((movies) => {
 					console.log(' Массив карточек появляющихся в SavesMovies', movies)
 
-					const savedMoviesCards = movies.filter((movie) => filterMovies(movie, query))
+					const savedMoviesCards = movies.data.filter((movie) =>
+						filterMovies(movie, query),
+					)
 
-					setInitialSavedMovies(
-						!shortMovieFilter
+					const checkedMoviesCards = savedMoviesCards.filter(
+						(savedMovieCard) => savedMovieCard.duration <= 55,
+					)
+
+					/*	setInitialSavedMovies(
+						shortMovieFilter
 							? savedMoviesCards
 							: savedMoviesCards.filter(
 									(savedMovieCard) => savedMovieCard.duration <= 55,
 							  ),
-					)
+					)*/
+
+					setInitialSavedMovies(checkedMoviesCards)
+
+					console.log('работает ли фильтр', shortMovieFilter)
 					setShortMovieFilter(false)
 				})
 				.catch((err) => {
@@ -49,12 +66,24 @@ function SavedMovies(props) {
 				})
 		}
 	}
+
+	/*const savedMoviesList = savedMovies.filter((item) => item.owner._id === userData._id)
+	localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
+	setUserMovies(savedMoviesList)*/
 	return (
 		<div className='movies'>
+			<Header name='menu'>
+				<MenuButton
+					showMenu={props.showMenu}
+					isShowMenu={props.isShowMenu}
+					closeMenu={props.closeMenu}
+				/>
+			</Header>
+
 			<SearchForm
 				getInitialMovies={getInitialSavedMovies}
 				shortMovieFilter={props.shortMovieFilter}
-				onCheckboxChange={handleCheckChange}
+				onCheckboxChange={handleCheckboxChange}
 			/>
 			{isPreloaderShow && <Preloader />}
 			{props.savedUserMovies.length > 0 ? (

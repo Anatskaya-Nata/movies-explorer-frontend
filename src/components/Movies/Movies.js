@@ -6,6 +6,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import { filterMovies } from '../../utils/Constants'
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
 import Preloader from '../Preloader/Preloader'
+import Header from '../Header/Header'
+import MenuButton from '../MenuButton/MenuButton'
 
 function Movies(props) {
 	const [initialMovies, setInitialMovies] = React.useState([])
@@ -56,7 +58,7 @@ function Movies(props) {
 				console.log('массив карточек по запросу в поисковой стороке movies', moviesCards)
 				setInitialMovies(moviesCards)
 				localStorage.setItem('movies', JSON.stringify(moviesCards))
-				//localStorage.setItem('movies', JSON.stringify(movies))
+				console.log('localStorage после фильтра по строке', localStorage)
 
 				//setShortMovieFilter(false)
 			})
@@ -71,13 +73,20 @@ function Movies(props) {
 	//console.log(initialMovies)
 	return (
 		<div className='movies'>
+			<Header name='menu'>
+				<MenuButton
+					showMenu={props.showMenu}
+					isShowMenu={props.isShowMenu}
+					closeMenu={props.closeMenu}
+				/>
+			</Header>
+
 			<SearchForm
 				getInitialMovies={getInitialMovies}
 				/*getInitialMovies={handleSearchMovie}*/
 				shortMovieFilter={props.shortMovieFilter}
 				onCheckboxChange={handleCheckboxChange}
 			/>
-
 			{isPreloaderShow && <Preloader />}
 			{initialMovies.length > 0 ? (
 				<MoviesCardList
@@ -104,3 +113,7 @@ export default Movies
 
 //<Preloader isShow={isPreloaderShow} />
 /*{isPreloaderShow && <Preloader />}*/
+
+/*<Header name='menu'>
+<Menu />
+</Header>*/

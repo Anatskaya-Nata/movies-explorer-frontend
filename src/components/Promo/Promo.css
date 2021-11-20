@@ -2,6 +2,7 @@
 	position: relative;
 	background-color: #073042;
 	display: flex;
+	/*padding: 0 10px;*/
 }
 
 .promo__container {
@@ -58,6 +59,10 @@
 }
 
 @media screen and (min-width: 768px) {
+	/*.promo {
+		padding: 0 30px;
+	}*/
+
 	.promo__container {
 		position: relative;
 		margin: 224px auto 240px auto;
@@ -90,6 +95,9 @@
 }
 
 @media screen and (min-width: 1280px) {
+	/*.promo {
+		padding: 0 70px;
+	}*/
 	.promo__container {
 		position: relative;
 		margin: 82px auto 122px auto;

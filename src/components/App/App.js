@@ -1,18 +1,18 @@
 import React from 'react'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import './App.css'
-import Header from '../Header/Header'
+//import Header from '../Header/Header'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Main from '../Main/Main'
-import EnterBlock from '../EnterBlock/EnterBlock'
-import Menu from '../Menu/Menu'
+//import EnterBlock from '../EnterBlock/EnterBlock'
+//import Menu from '../Menu/Menu'
 import Footer from '../Footer/Footer'
 import PageNotFound from '../PageNotFound/PageNotFound'
-import MenuResult from '../MenuResult/MenuResult'
+
 import mainApi from '../../utils/MainApi'
 import * as auth from '../../utils/auth'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
@@ -23,8 +23,21 @@ function App() {
 	const [userMovies, setUserMovies] = React.useState([])
 	const [loggedIn, setLoggedIn] = React.useState(false)
 	const [infosignMessage, setInfosignMessage] = React.useState('')
-	//const [initialMovies, setInitialMovies] = React.useState([])
-	//const [shortMovieFilter, setShortMovieFilter] = React.useState(false)
+	const [isShowMenu, setIsShowMenu] = React.useState(false)
+
+	/*function checkSavedMovie(movie) {
+		return (movie.isSaved = userMovies.some(
+			(userMovie) => userMovie.movieId === movie.id,
+		))
+	}*/
+
+	const handleShowMenuClick = () => {
+		setIsShowMenu((isShowMenu) => !isShowMenu)
+	}
+
+	const closeMenu = () => {
+		setIsShowMenu(false)
+	}
 
 	const history = useHistory()
 
@@ -46,7 +59,7 @@ function App() {
 					setCurrentUser(userData)
 					localStorage.setItem('currentUser', JSON.stringify(userData))
 					setLoggedIn(true)
-					console.log(localStorage)
+					console.log('localStorage при входе', localStorage)
 				}
 			})
 			.catch((err) => {
@@ -127,6 +140,16 @@ function App() {
 			})
 	}
 
+	/*function handleMoviesSave(card) {
+		// Снова проверяем, есть ли уже лайк на этой карточке
+		const isLiked = card.likes.some(i => i._id === currentUser._id);
+		
+		// Отправляем запрос в API и получаем обновлённые данные карточки
+		api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
+			setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
+		});
+	} */
+
 	function handleMoviesSave(moviesData) {
 		console.log(
 			'лайкнутая карточка, отправденная на добавление в фильмы юзера',
@@ -140,19 +163,33 @@ function App() {
 			.catch(handleError)
 	}
 
+	//  const isLiked = card.likes.some(i => i._id === currentUser._id);
+
 	function getSavedMoviesCards() {
 		const jwt = localStorage.getItem('jwt')
+
 		mainApi
 			.getSavedMovies(jwt)
 
 			.then((newMovie) => {
 				console.log('массив карточек юзера, пришедших из компаса', newMovie)
-				setUserMovies(newMovie.data)
-				//setUserMovies([...newMovie.data, ...userMovies])
-				localStorage.setItem('userMovies', JSON.stringify(newMovie))
 
-				console.log(localStorage)
-				console.log('должен быть массив юзера', userMovies)
+				const savedMoviesList = newMovie.data.filter(
+					(item) => item.owner === currentUser.data._id,
+				)
+				console.log(
+					'массив карточек отфильтрованных под юзера',
+					savedMoviesList,
+					currentUser.data._id,
+				)
+				localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
+				setUserMovies(savedMoviesList)
+
+				console.log('localStorage при получении юзеровских карточек', localStorage)
+
+				//setUserMovies(newMovie.data)
+				//setUserMovies([...newMovie.data, ...userMovies])
+				//	localStorage.setItem('userMovies', JSON.stringify(newMovie))
 			})
 			.catch(handleError)
 	}
@@ -177,6 +214,10 @@ function App() {
 		console.log(localStorage)
 	}
 
+	/*const handleEditAvatarClick = () => {
+		setisEditAvatarPopupOpen((isEditAvatarPopupOpen) => !isEditAvatarPopupOpen)
+	}*/
+
 	/*React.useEffect(() => {
 		const jwt = localStorage.getItem('jwt')
 		if (jwt !== null) {
@@ -197,49 +238,23 @@ function App() {
 		}
 	}, [loggedIn])*/
 
-	/*function handleDislikeClick(movie) {
-		const jwt = localStorage.getItem('jwt')
-		const movieId = movie.id || movie.movieId
-		const selectedMovie = userMovies.find((item) => item.movieId === movieId)
-		console.log('Карточка отмеченная на удаление', selectedMovie)
-		mainApi
-			.deleteMovie(selectedMovie._id, jwt)
-
-			.then((deletedMovie) => {
-				console.log('Карточка ответ на фетч на удаление', deletedMovie)
-				if (!deletedMovie) {
-					throw new Error('При удалении фильма произошла ошибка')
-				} else {
-					const newMoviesList = userMovies.filter((c) => c.movieId !== movieId)
-					setUserMovies(newMoviesList)
-				}
-			})
-			.catch((err) => console.log(`При удалении фильма: ${err}`))
-	}
-
-	function handleMovieDeleteButton(movie) {
-		handleDislikeClick(movie)
-	}
-*/
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className='App'>
 				<div className='page'>
 					<Switch>
 						<Route exact path='/'>
-							<Header name='promo'>
-								<EnterBlock />
-							</Header>
-							<Main />
+							<Main loggedIn={loggedIn} />
 						</Route>
 						<Route path='/movies'>
-							<Header name='menu' />
-							<Menu />
 							<Movies
 								location={pathname}
 								onMovieSave={handleMoviesSave}
 								onMovieDelete={removeSavedMovie}
 								savedUserMovies={userMovies}
+								showMenu={handleShowMenuClick}
+								isShowMenu={isShowMenu}
+								closeMenu={closeMenu}
 								//initialMovies={initialMovies}
 								//handleDuration={handleDuration}
 								//shortMovieFilter={!shortMovieFilter}
@@ -247,13 +262,14 @@ function App() {
 							/>
 						</Route>
 						<Route path='/saved-movies'>
-							<Header name='menu' />
-							<Menu />
 							<SavedMovies
 								location={pathname}
 								savedUserMovies={userMovies}
 								loggedIn={loggedIn}
 								onMovieDelete={removeSavedMovie}
+								showMenu={handleShowMenuClick}
+								isShowMenu={isShowMenu}
+								closeMenu={closeMenu}
 
 								//initialMovies={initialMovies}
 								//handleDuration={handleDuration}
@@ -262,12 +278,13 @@ function App() {
 							/>
 						</Route>
 						<Route path='/profile'>
-							<Header name='menu' />
-							<Menu />
 							<Profile
 								onEditUser={handleUpdateUser}
 								logOut={handleLogout}
 								errorText={infosignMessage}
+								showMenu={handleShowMenuClick}
+								isShowMenu={isShowMenu}
+								closeMenu={closeMenu}
 							/>
 						</Route>
 						<Route path='/signup'>
@@ -276,9 +293,7 @@ function App() {
 						<Route path='/signin'>
 							<Login onLogin={handleLogin} errorText={infosignMessage} />
 						</Route>
-						<Route path='/temp'>
-							<MenuResult />
-						</Route>
+
 						<Route path='*'>
 							<PageNotFound />
 						</Route>

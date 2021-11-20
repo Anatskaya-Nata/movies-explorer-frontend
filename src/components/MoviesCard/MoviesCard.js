@@ -6,11 +6,11 @@ function MoviesCard(props) {
 	console.log(props.card.owner, currentUser._id)*/
 
 	//const movieData = props.movie
-	console.log(
+	/*console.log(
 		'массив, сохраненных карточек,пришедший в saveMovies',
 		props.savedUserMovies,
 	)
-	console.log('карточка, на которую тыкаем', props.movie)
+	console.log('карточка, на которую тыкаем', props.movie)*/
 	const isSavedMovie = props.savedUserMovies.some((i) => i.nameRU === props.movie.nameRU)
 	//console.log('карточки юзера, пришедшие из компаса', props.savedUserMovies)
 

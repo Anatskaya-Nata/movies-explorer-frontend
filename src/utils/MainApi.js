@@ -75,6 +75,16 @@ class MainApi {
 			},
 		}).then(this._checkResponse)
 	}
+
+	changeLikeCardStatus(id, like) {
+		return fetch(`${this._address}/movies/${id}`, {
+			method: like ? 'PUT' : 'DELETE',
+			headers: {
+				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
+				'Content-Type': 'application/json',
+			},
+		}).then(this._checkResponse)
+	}
 }
 
 const config = {
