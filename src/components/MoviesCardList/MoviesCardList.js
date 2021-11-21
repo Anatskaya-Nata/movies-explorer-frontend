@@ -7,22 +7,23 @@ const MoviesCardList = (props) => {
 	const [countMovies, setCountMovies] = React.useState(0)
 
 	React.useEffect(() => {
-		props.location === '/movies'
+		props.location.pathname === '/movies'
 			? actualResizeHandler()
 			: setCountMovies(props.initialMovies.length)
 	}, [props.initialMovies, props.location])
 
+	//console.log(props.initialMovies)
 	function actualResizeHandler() {
-		if (window.innerWidth > 1270) {
+		if (window.innerWidth > 1280) {
 			setCountMovies(12)
-		} else if (window.innerWidth > 750) {
+		} else if (window.innerWidth > 768) {
 			setCountMovies(8)
 		} else {
 			setCountMovies(5)
 		}
 	}
 	function addMoreMovies() {
-		if (window.innerWidth > 1250) {
+		if (window.innerWidth > 1280) {
 			setCountMovies(countMovies + 4)
 		} else {
 			setCountMovies(countMovies + 2)
@@ -37,6 +38,8 @@ const MoviesCardList = (props) => {
 		<section className='movies__gallary_container'>
 			<ul className='movies__gallary'>
 				{props.initialMovies.slice(0, countMovies).map((movie) => {
+					//console.log(movie)
+
 					return (
 						<li className='movies__gallary_item' key={movie.id || movie._id}>
 							<MoviesCard
@@ -45,6 +48,11 @@ const MoviesCardList = (props) => {
 								onMovieDelete={props.onMovieDelete}
 								savedUserMovies={props.savedUserMovies}
 								movie={movie}
+								/*	image={
+									props.location === '/saved-movies'
+										? props.movie.image
+										: `https://api.nomoreparties.co${movie.image.url}`
+								}*/
 								key={movie._id}
 							/>
 						</li>
@@ -54,7 +62,7 @@ const MoviesCardList = (props) => {
 			<button
 				onClick={addMoreMovies}
 				className={
-					props.location === '/movies'
+					props.location.pathname === '/movies'
 						? `movies__button-more ${disableMoviesButton}`
 						: 'movies__button-more movies__button-more_hidden'
 				}
