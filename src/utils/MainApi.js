@@ -76,8 +76,8 @@ class MainApi {
 }
 
 const config = {
-	//address: 'https://api.movies.diploma.nomoredomains.monster',
-	address: 'http://localhost:3001',
+	address: 'https://api.movies.diploma.nomoredomains.monster',
+	//address: 'http://localhost:3001',
 
 	headers: {
 		'Content-Type': 'application/json',
