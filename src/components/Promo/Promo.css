@@ -8,23 +8,23 @@
 .promo__container {
 	position: relative;
 	margin: 142px auto 180px auto;
-	opacity: 20;
+	/*opacity: 20;*/
 }
 
 .promo__grid {
 	display: grid;
 	grid-template-columns: repeat(4, 25%);
 	grid-template-rows: repeat(4, 25%);
-	border-bottom: 2px solid #ffffff;
-	border-right: 2px solid #ffffff;
+	border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+	border-right: 2px solid rgba(255, 255, 255, 0.2);
 	margin: 0 auto 0 auto;
 }
 
 .promo__block {
 	width: 60px;
 	height: 60px;
-	border-top: 2px solid #ffffff;
-	border-left: 2px solid #ffffff;
+	border-top: 2px solid rgba(255, 255, 255, 0.2);
+	border-left: 2px solid rgba(255, 255, 255, 0.2);
 }
 
 .promo__circle {
@@ -32,7 +32,7 @@
 	top: 0;
 	width: 244px;
 	height: 244px;
-	border: 2px solid #ffffff;
+	border: 2px solid rgba(255, 255, 255, 0.2);
 	border-radius: 50%;
 }
 
@@ -40,7 +40,7 @@
 	position: absolute;
 	width: 58px;
 	height: 95px;
-	border: 21px solid #ffffff;
+	border: 21px solid rgba(255, 255, 255, 0.2);
 	border-bottom: none;
 	top: 27%;
 	left: 30%;
@@ -78,7 +78,7 @@
 	.promo__sign {
 		width: 75px;
 		height: 123px;
-		border: 27px solid #ffffff;
+		border: 27px solid rgba(255, 255, 255, 0.2);
 		border-bottom: none;
 	}
 
