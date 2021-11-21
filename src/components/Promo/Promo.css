@@ -8,7 +8,7 @@
 .promo__container {
 	position: relative;
 	margin: 142px auto 180px auto;
-	opacity: 50%;
+	opacity: 0, 2;
 }
 
 .promo__grid {
