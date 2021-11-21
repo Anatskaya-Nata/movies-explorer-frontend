@@ -44,5 +44,3 @@ function AboutProject(props) {
 }
 
 export default AboutProject
-/*<p className='project__greybar_text'>4 недели</p>
-	<p className='project__underbar_text'>Back-end</p>*/

@@ -5,7 +5,6 @@ import Menu from '../Menu/Menu'
 
 function MenuButton(props) {
 	function openCloseMenu() {
-		//console.log('Открытие меню должно быть')
 		props.showMenu()
 	}
 	return (

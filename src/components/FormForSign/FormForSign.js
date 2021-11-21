@@ -68,7 +68,6 @@ function FormForSign(props) {
 			bottom_text={props.bottom_text}
 			bottom_link={props.bottom_link}
 			valid={!formValid}
-			//onSubmit={props.onSubmit}
 			onSubmit={handleSubmit}
 			errorText={props.errorText}
 			link={props.link}
@@ -86,7 +85,7 @@ function FormForSign(props) {
 					minLength='2'
 					maxLength='30'
 					value={name}
-					//defaultValue='Виталий '
+					autoComplete='off'
 					onChange={handleChangeName}
 					className={`signform__input signform__input_name signform__input_${props.name}`}
 				/>
@@ -105,7 +104,7 @@ function FormForSign(props) {
 					minLength='2'
 					maxLength='30'
 					value={email}
-					//defaultValue='pochta@yandex.ru| '
+					autoComplete='off'
 					onChange={handleChangeEmail}
 					className={`signform__input signform__input_mail signform__input_${props.name}`}
 				/>
@@ -120,17 +119,21 @@ function FormForSign(props) {
 					type='password'
 					name='password'
 					placeholder='Пароль'
-					//autocomplete='current-password'
 					required
 					minLength='2'
 					maxLength='30'
+					autoComplete='off'
 					value={password}
-					//defaultValue='123456'
 					onChange={handleChangePassword}
 					className={`signform__input signform__input_password signform__input_${props.name}`}
 				/>
 				<ErrorMessage errorText={passwordError} name={'log-reg'} />
 			</div>
+			{props.serverError ? (
+				<span className='auth__form-message-error'>{props.messageServerError}</span>
+			) : (
+				<></>
+			)}
 		</Form>
 	)
 }

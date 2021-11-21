@@ -59,5 +59,3 @@ function Menu(props) {
 }
 
 export default Menu
-
-//className={`popup popup_theme_${props.name} ${props.isOpen ? 'popup_active' : ''}`}

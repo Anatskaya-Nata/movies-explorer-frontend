@@ -18,7 +18,6 @@ function Movies(props) {
 	React.useEffect(() => {
 		const lastSavedMovies = localStorage.getItem('movies')
 
-		//console.log(localStorage.movies)
 		if (lastSavedMovies) {
 			setInitialMovies(JSON.parse(lastSavedMovies))
 		} else {
@@ -31,10 +30,9 @@ function Movies(props) {
 		const lastSavedMovies = JSON.parse(localStorage.getItem('movies'))
 
 		if (!shortMovieFilter) {
-			const moviesFilter = lastSavedMovies.filter((movieCard) => movieCard.duration <= 55)
+			const moviesFilter = lastSavedMovies.filter((movieCard) => movieCard.duration <= 40)
 			setInitialMovies(moviesFilter)
 		} else {
-			//setShortMovieFilter(shortMovieFilter)
 			setInitialMovies(lastSavedMovies)
 		}
 	}
@@ -53,24 +51,18 @@ function Movies(props) {
 
 			.then((movies) => {
 				const moviesCards = movies.filter((movie) => filterMovies(movie, query))
-				//console.log(query)
-				//console.log(movies)
-				console.log('массив карточек по запросу в поисковой стороке movies', moviesCards)
+
 				setInitialMovies(moviesCards)
 				localStorage.setItem('movies', JSON.stringify(moviesCards))
-				console.log('localStorage после фильтра по строке', localStorage)
-
-				//setShortMovieFilter(false)
 			})
 			.catch((err) => {
 				console.log(err)
-				//setIsErrorMessage(true)
 			})
 			.finally(() => {
 				setPreloaderShow(false)
 			})
 	}
-	//console.log(initialMovies)
+
 	return (
 		<div className='movies'>
 			<Header name='menu'>
@@ -83,7 +75,6 @@ function Movies(props) {
 
 			<SearchForm
 				getInitialMovies={getInitialMovies}
-				/*getInitialMovies={handleSearchMovie}*/
 				shortMovieFilter={props.shortMovieFilter}
 				onCheckboxChange={handleCheckboxChange}
 			/>
@@ -91,9 +82,7 @@ function Movies(props) {
 			{initialMovies.length > 0 ? (
 				<MoviesCardList
 					location={props.location}
-					// карточки по запросу
 					initialMovies={initialMovies}
-					//initialMovies={props.initialMovies}
 					savedUserMovies={props.savedUserMovies}
 					onMovieDelete={props.onMovieDelete}
 					onMovieSave={props.onMovieSave}
@@ -106,14 +95,3 @@ function Movies(props) {
 }
 
 export default Movies
-
-/*  <button className='movies__button-more' type='button'>
-				Ещё
-			</button> */
-
-//<Preloader isShow={isPreloaderShow} />
-/*{isPreloaderShow && <Preloader />}*/
-
-/*<Header name='menu'>
-<Menu />
-</Header>*/

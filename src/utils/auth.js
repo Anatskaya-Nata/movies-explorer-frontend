@@ -32,10 +32,8 @@ export const authorize = (email, password) => {
 	})
 		.then(checkResponse)
 		.then((data) => {
-			//console.log(data)
 			if (data.token) {
 				localStorage.setItem('jwt', data.token)
-				//	console.log(localStorage)
 				return data
 			} else {
 				return
@@ -53,6 +51,5 @@ export const getUser = (token) =>
 	})
 		.then(checkResponse)
 		.then((data) => {
-			console.log(data) // получили юзера
 			return data
 		})

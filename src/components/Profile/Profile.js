@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import './Profile.css'
-//import FormForProfile from '../FormForProfile/FormForProfile'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 import Form from '../Form/Form'
 import ErrorMessage from '../ErrorMessage/ErrorMessage'
@@ -17,7 +16,11 @@ function Profile(props) {
 	const [formValid, setFormValid] = useState(false)
 	const [isInputDisabled, setIsInputDisabled] = useState(true)
 
-	//console.log(currentUser)
+	const [messageServerError, setMessageServerError] = React.useState('')
+	React.useEffect(() => {
+		if (props.serverError === 409)
+			setMessageServerError('Пользователь с такими данными уже зарегистрирован')
+	}, [props.serverError])
 
 	React.useEffect(() => {
 		if (currentUser !== undefined) {
@@ -62,11 +65,6 @@ function Profile(props) {
 		changeInputDisabled()
 	}
 
-	/* useEffect(() => {
-        setName(currentUser.data.name);
-        setEmail(currentUser.data.email);
-      }, [currentUser]);*/
-
 	useEffect(() => {
 		if (nameError || emailError) {
 			setFormValid(false)
@@ -84,8 +82,6 @@ function Profile(props) {
 	}, [name, email, nameError, emailError])
 
 	useEffect(() => {
-		//	console.log(currentUser.data.name)
-
 		if (currentUser.data.name === name && currentUser.data.email === email) {
 			setFormValid(true)
 		} else {
@@ -129,9 +125,7 @@ function Profile(props) {
 						required
 						minLength='2'
 						maxLength='30'
-						//value={currentUser.data.name}
 						value={name || ''}
-						//defaultValue='Виталий '
 						onChange={handleChangeName}
 						disabled={!isInputDisabled}
 						className='signform__input signform__input_name signform__input_pro'
@@ -150,16 +144,18 @@ function Profile(props) {
 						required
 						minLength='2'
 						maxLength='30'
-						//value={currentUser.data.email}
-
 						value={email || ''}
-						//defaultValue='pochta@yandex.ru| '
 						onChange={handleChangeEmail}
 						disabled={!isInputDisabled}
 						className='signform__input signform__input_mail signform__input_pro'
 					/>
 				</div>
 				<ErrorMessage errorText={emailError} name={'profile'} />
+				{props.serverError ? (
+					<span className='auth__form-message-error'>{messageServerError}</span>
+				) : (
+					<></>
+				)}
 			</Form>
 		</div>
 	)

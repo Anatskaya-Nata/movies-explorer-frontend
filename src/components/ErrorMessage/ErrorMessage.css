@@ -11,7 +11,10 @@
 	text-align: end;
 }
 
-.error__message_log-reg {
+.error__message_log {
+	margin: 6px 0 6px 0;
+}
+.error__message_reg {
 	margin: 6px 0 6px 0;
 }
 
@@ -22,7 +25,3 @@
 .error-message_hide {
 	display: none;
 }
-
-/*.error-message_show {
-	display: block;
-}*/

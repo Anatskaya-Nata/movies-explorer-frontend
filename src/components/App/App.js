@@ -1,46 +1,35 @@
 import React from 'react'
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
 import './App.css'
-//import Header from '../Header/Header'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
 import Profile from '../Profile/Profile'
 import Register from '../Register/Register'
 import Login from '../Login/Login'
 import Main from '../Main/Main'
-//import EnterBlock from '../EnterBlock/EnterBlock'
-//import Menu from '../Menu/Menu'
 import Footer from '../Footer/Footer'
 import PageNotFound from '../PageNotFound/PageNotFound'
-
+import ProtectedRoute from '../ProtectedRoute'
 import mainApi from '../../utils/MainApi'
 import * as auth from '../../utils/auth'
 import { CurrentUserContext } from '../../contexts/CurrentUserContext'
 
 function App() {
-	const { pathname } = useLocation()
 	const [currentUser, setCurrentUser] = React.useState({})
+	const [serverError, setServerError] = React.useState(null)
 	const [userMovies, setUserMovies] = React.useState([])
 	const [loggedIn, setLoggedIn] = React.useState(false)
 	const [infosignMessage, setInfosignMessage] = React.useState('')
 	const [isShowMenu, setIsShowMenu] = React.useState(false)
 	const history = useHistory()
-
-	/*function checkSavedMovie(movie) {
-		return (movie.isSaved = userMovies.some(
-			(userMovie) => userMovie.movieId === movie.id,
-		))
-	}*/
+	const location = useLocation()
 
 	React.useEffect(() => {
 		if (loggedIn) {
-			// mainApi.setToken(localStorage.getItem("jwt"));
 			Promise.all([mainApi.getUserData(), mainApi.getSavedMovies()])
 				.then(([userData, moviesData]) => {
 					setCurrentUser(userData)
 					localStorage.setItem('currentUser', JSON.stringify(userData))
-
-					console.log('данные юзера при эффеете', userData.data._id)
 
 					const savedMoviesList = moviesData.data.filter(
 						(item) => item.owner === userData.data._id,
@@ -48,8 +37,6 @@ function App() {
 
 					localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
 					setUserMovies(savedMoviesList)
-
-					console.log('карточки прогруженные с учетом ID', savedMoviesList)
 				})
 				.catch((err) => {
 					alert(err)
@@ -69,73 +56,44 @@ function App() {
 	function handleError(error) {
 		console.log(error)
 	}
-	/*	function handleLogIn() {
-		setLoggedIn(true)
-	}*/
-
-	/*	function getCurrentUser() {
-		const jwt = localStorage.getItem('jwt')
-
-		mainApi
-			.getUserData(jwt)
-			.then((userData) => {
-				//console.log(userData)
-				if (userData) {
-					setCurrentUser(userData)
-					localStorage.setItem('currentUser', JSON.stringify(userData))
-					setLoggedIn(true)
-					console.log('localStorage при входе', localStorage)
-				}
-			})
-			.catch((err) => {
-				console.log(err)
-				//localStorage.removeItem('jwt')
-				//localStorage.removeItem('currentUser')
-			})
-	}*/
 
 	//Проверить токен
 	React.useEffect(() => {
 		const jwt = localStorage.getItem('jwt')
-
 		if (jwt) {
-			//console.log(jwt)
-			auth.getUser(jwt).then((res) => {
-				setLoggedIn(true)
-				//getCurrentUser()
-				setCurrentUser(res)
-
-				//console.log(res.data) //юзер
-				//setName(res.data.name)
-				//setEmail(res.data.email)
-
-				//history.push('/')
-			})
+			auth
+				.getUser(jwt)
+				.then((res) => {
+					setLoggedIn(true)
+					setCurrentUser(res)
+				})
+				.catch((err) => {
+					console.log(`Переданный токен некорректен ${err}`)
+					localStorage.removeItem('jwt')
+					history.push('/')
+				})
 		}
-	}, [loggedIn])
+	}, [loggedIn, history])
 
 	function handleLogin(email, password) {
 		auth
 			.authorize(email, escape(password))
 
 			.then((data) => {
-				console.log(data)
 				if (data.token) {
-					//getCurrentUser()
 					setInfosignMessage('')
 					setLoggedIn(true)
-
-					//setName(name)
-					//setEmail(email)
-					//handleLogIn()
+					setServerError(null)
 					history.push('/movies')
 				}
 			})
 			.catch((err) => {
-				setInfosignMessage('Что-то пошло не так! Попробуйте ещё раз.')
-			})
-			.finally(() => {
-				setInfosignMessage('')
+				if (err === 'Ошибка: 401') {
+					setServerError(401)
+				} else if (err === 'Ошибка: 400') {
+					setServerError(400)
+				}
+				console.log(err)
 			})
 	}
 
@@ -146,13 +104,17 @@ function App() {
 			.then(() => {
 				handleLogin(email, password)
 				setInfosignMessage('')
+				setServerError(null)
 				history.push('/movies')
 			})
 			.catch((err) => {
-				setInfosignMessage('Что-то пошло не так! Попробуйте ещё раз.')
-			})
-			.finally(() => {
-				setInfosignMessage('')
+				if (err === 'Ошибка: 409') {
+					setServerError(409)
+				}
+				if (err === 'Ошибка: 400') {
+					setServerError(400)
+				}
+				console.log(err)
 			})
 	}
 
@@ -160,28 +122,16 @@ function App() {
 		mainApi
 			.setUserData({ name, email })
 			.then((newData) => {
-				console.log(newData)
 				setCurrentUser(newData)
 				setInfosignMessage('Данные профиля успешно обновлены')
 			})
 			.catch((err) => {
-				console.log(`Ошибка при обновлении данных пользователя. ${err}`)
+				if (err === 'Ошибка: 409') {
+					setServerError(409)
+				}
+				console.log(err)
 			})
 	}
-
-	/*function handleMoviesSave(moviesData) {
-		console.log(
-			'лайкнутая карточка, отправденная на добавление в фильмы юзера',
-			moviesData,
-		)
-		mainApi
-			.setMovies(moviesData)
-			.then(() => {
-				getUserMovies()
-			})
-			.catch(handleError)
-	}
-*/
 
 	function handleMoviesSave(movie) {
 		const jwt = localStorage.getItem('jwt')
@@ -195,16 +145,6 @@ function App() {
 			})
 	}
 
-	/*function getUserMovies(userMovies) {
-		//setUserMovies([...newMovie.data, ...userMovies])
-		console.log('массив карточек юзера, пришедших из компаса', userMovies)
-		const savedMoviesList = userMovies.data.filter(
-			(item) => item.owner === currentUser.data._id,
-		)
-		localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
-		setUserMovies(savedMoviesList)
-	}*/
-
 	function getSavedMoviesCards() {
 		const jwt = localStorage.getItem('jwt')
 
@@ -212,24 +152,12 @@ function App() {
 			.getSavedMovies(jwt)
 
 			.then((newMovie) => {
-				console.log('массив карточек юзера, пришедших из компаса', newMovie)
-
 				const savedMoviesList = newMovie.data.filter(
 					(item) => item.owner === currentUser.data._id,
 				)
-				console.log(
-					'массив карточек отфильтрованных под юзера',
-					savedMoviesList,
-					currentUser.data._id,
-				)
+
 				localStorage.setItem('userMovies', JSON.stringify(savedMoviesList))
 				setUserMovies(savedMoviesList)
-
-				console.log('localStorage при получении юзеровских карточек', localStorage)
-
-				//setUserMovies(newMovie.data)
-				//setUserMovies([...newMovie.data, ...userMovies])
-				//	localStorage.setItem('userMovies', JSON.stringify(newMovie))
 			})
 			.catch(handleError)
 	}
@@ -239,7 +167,7 @@ function App() {
 			.deleteCard(id)
 			.then(() => {
 				getSavedMoviesCards()
-				//getUserMovies()
+
 				setUserMovies(userMovies)
 			})
 			.catch(handleError)
@@ -249,11 +177,10 @@ function App() {
 		setCurrentUser({})
 		setLoggedIn(false)
 		localStorage.removeItem('jwt')
+		localStorage.removeItem('movies')
 		//localStorage.clear()
 		history.push('/')
 		setUserMovies([])
-
-		console.log(localStorage)
 	}
 
 	return (
@@ -262,55 +189,58 @@ function App() {
 				<div className='page'>
 					<Switch>
 						<Route exact path='/'>
-							<Main loggedIn={loggedIn} />
-						</Route>
-						<Route path='/movies'>
-							<Movies
-								location={pathname}
-								onMovieSave={handleMoviesSave}
-								onMovieDelete={removeSavedMovie}
-								savedUserMovies={userMovies}
-								showMenu={handleShowMenuClick}
-								isShowMenu={isShowMenu}
-								closeMenu={closeMenu}
-								//initialMovies={initialMovies}
-								//handleDuration={handleDuration}
-								//shortMovieFilter={!shortMovieFilter}
-								//handleCheckboxChange={handleCheckboxChange}
-							/>
-						</Route>
-						<Route path='/saved-movies'>
-							<SavedMovies
-								location={pathname}
-								savedUserMovies={userMovies}
-								loggedIn={loggedIn}
-								onMovieDelete={removeSavedMovie}
-								showMenu={handleShowMenuClick}
-								isShowMenu={isShowMenu}
-								closeMenu={closeMenu}
-
-								//initialMovies={initialMovies}
-								//handleDuration={handleDuration}
-								//shortMovieFilter={shortMovieFilter}
-								//handleCheckboxChange={handleCheckboxChange}
-							/>
-						</Route>
-						<Route path='/profile'>
-							<Profile
-								onEditUser={handleUpdateUser}
-								logOut={handleLogout}
-								errorText={infosignMessage}
-								showMenu={handleShowMenuClick}
-								isShowMenu={isShowMenu}
-								closeMenu={closeMenu}
-							/>
+							<Main />
 						</Route>
 						<Route path='/signup'>
-							<Register onRegister={handleRegister} errorText={infosignMessage} />
+							<Register
+								onRegister={handleRegister}
+								errorText={infosignMessage}
+								serverError={serverError}
+							/>
 						</Route>
 						<Route path='/signin'>
-							<Login onLogin={handleLogin} errorText={infosignMessage} />
+							<Login
+								onLogin={handleLogin}
+								errorText={infosignMessage}
+								serverError={serverError}
+							/>
 						</Route>
+
+						<ProtectedRoute
+							path='/movies'
+							component={Movies}
+							location={location.pathname}
+							loggedIn={loggedIn}
+							onMovieSave={handleMoviesSave}
+							onMovieDelete={removeSavedMovie}
+							savedUserMovies={userMovies}
+							showMenu={handleShowMenuClick}
+							isShowMenu={isShowMenu}
+							closeMenu={closeMenu}
+						/>
+						<ProtectedRoute
+							path='/saved-movies'
+							component={SavedMovies}
+							location={location.pathname}
+							savedUserMovies={userMovies}
+							loggedIn={loggedIn}
+							onMovieDelete={removeSavedMovie}
+							showMenu={handleShowMenuClick}
+							isShowMenu={isShowMenu}
+							closeMenu={closeMenu}
+						/>
+						<ProtectedRoute
+							path='/profile'
+							component={Profile}
+							loggedIn={loggedIn}
+							onEditUser={handleUpdateUser}
+							logOut={handleLogout}
+							errorText={infosignMessage}
+							showMenu={handleShowMenuClick}
+							isShowMenu={isShowMenu}
+							closeMenu={closeMenu}
+							serverError={serverError}
+						/>
 
 						<Route path='*'>
 							<PageNotFound />

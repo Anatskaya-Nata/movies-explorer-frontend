@@ -53,6 +53,7 @@ function FormForLog(props) {
 			onSubmit={handleSubmit}
 			link={props.link}
 			errorText={props.errorText}
+			messageServerError={props.messageServerError}
 		>
 			<div className={`signform__input_block signform__input_block-${props.name}`}>
 				<h3 className={`signform__input_subtitle signform__input_subtitle-${props.name}`}>
@@ -67,7 +68,7 @@ function FormForLog(props) {
 					minLength='2'
 					maxLength='30'
 					value={email}
-					//defaultValue='pochta@yandex.ru '
+					autoComplete='off'
 					onChange={handleChangeEmail}
 					className={`signform__input signform__input_mail signform__input_${props.name}`}
 				/>
@@ -85,7 +86,7 @@ function FormForLog(props) {
 					required
 					minLength='2'
 					maxLength='30'
-					//autoComplete="off"
+					autoComplete='off'
 					value={password}
 					///defaultValue='123456'
 					onChange={handleChangePassword}
@@ -93,6 +94,11 @@ function FormForLog(props) {
 				/>
 				<ErrorMessage errorText={passwordError} name={'log-reg'} />
 			</div>
+			{props.serverError ? (
+				<span className='auth__form-message-error'>{props.messageServerError}</span>
+			) : (
+				<></>
+			)}
 		</Form>
 	)
 }

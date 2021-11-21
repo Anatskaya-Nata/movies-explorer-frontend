@@ -8,7 +8,6 @@
 	width: 100%;
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	/*grid-template-rows: repeat(5, 1fr);*/
 	grid-template-rows: auto;
 	grid-auto-rows: 1fr;
 	grid-column-gap: 20px;
@@ -32,9 +31,6 @@
 	display: none;
 }
 
-/*.movies__gallary-hidden {
-	display: none;
-}*/
 .movies__cardList_text {
 	font-style: normal;
 	font-weight: 500;
@@ -73,7 +69,6 @@
 @media screen and (min-width: 768px) {
 	.movies__gallary {
 		grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));
-		/*grid-template-rows: repeat(4, 1fr);*/
 		grid-column-gap: 30px;
 	}
 
@@ -85,7 +80,6 @@
 @media screen and (min-width: 1280px) {
 	.movies__gallary {
 		grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-		/*grid-template-rows: repeat(3, 1fr);*/
 		grid-column-gap: 20px;
 	}
 }

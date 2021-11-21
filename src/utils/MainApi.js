@@ -19,7 +19,6 @@ class MainApi {
 	}
 
 	setUserData(data) {
-		console.log(data)
 		return fetch(`${this._address}/users/me`, {
 			method: 'PATCH',
 			headers: {
@@ -34,7 +33,6 @@ class MainApi {
 	}
 
 	setMovies(newMovieData) {
-		console.log(newMovieData.country)
 		return fetch(`${this._address}/movies`, {
 			method: 'POST',
 			headers: {
@@ -75,16 +73,6 @@ class MainApi {
 			},
 		}).then(this._checkResponse)
 	}
-
-	/*	changeLikeCardStatus(id, like) {
-		return fetch(`${this._address}/movies/${id}`, {
-			method: like ? 'PUT' : 'DELETE',
-			headers: {
-				Authorization: `Bearer ${localStorage.getItem('jwt')}`,
-				'Content-Type': 'application/json',
-			},
-		}).then(this._checkResponse)
-	}*/
 }
 
 const config = {
