@@ -2,6 +2,7 @@ import './Form.css'
 import React from 'react'
 import headerLogo from '../../images/headerLogo.svg'
 import ErrorMessage from '../ErrorMessage/ErrorMessage'
+import { Link } from 'react-router-dom'
 
 function Form(props) {
 	return (

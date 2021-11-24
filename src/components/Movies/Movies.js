@@ -3,7 +3,7 @@ import React from 'react'
 import moviesApi from '../../utils/MoviesApi'
 import SearchForm from '../SearchForm/SearchForm'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
-import { filterMovies } from '../../utils/Constants'
+import { FILTERDMOVIES, MAX_SHORT_MOVIE_DURATION } from '../../utils/Constants'
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
 import Preloader from '../Preloader/Preloader'
 import Header from '../Header/Header'
@@ -30,7 +30,9 @@ function Movies(props) {
 		const lastSavedMovies = JSON.parse(localStorage.getItem('movies'))
 
 		if (!shortMovieFilter) {
-			const moviesFilter = lastSavedMovies.filter((movieCard) => movieCard.duration <= 40)
+			const moviesFilter = lastSavedMovies.filter(
+				(movieCard) => movieCard.duration <= MAX_SHORT_MOVIE_DURATION,
+			)
 			setInitialMovies(moviesFilter)
 		} else {
 			setInitialMovies(lastSavedMovies)
@@ -50,7 +52,7 @@ function Movies(props) {
 			.getInitialCards()
 
 			.then((movies) => {
-				const moviesCards = movies.filter((movie) => filterMovies(movie, query))
+				const moviesCards = movies.filter((movie) => FILTERDMOVIES(movie, query))
 
 				setInitialMovies(moviesCards)
 				localStorage.setItem('movies', JSON.stringify(moviesCards))

@@ -1,14 +1,9 @@
 import './MoviesCard.css'
 import React from 'react'
+import { MOVIES_DURATION } from '../../utils/Constants'
 
 function MoviesCard(props) {
 	const isSavedMovie = props.savedUserMovies.some((i) => i.nameRU === props.movie.nameRU)
-
-	function getTimeFromMins(mins) {
-		const hours = Math.trunc(mins / 60)
-		const minutes = mins % 60
-		return hours + 'ч ' + minutes + 'м'
-	}
 
 	const movieSaveButtonClassName = `${isSavedMovie && 'movies__shot_choice-active'}`
 
@@ -82,7 +77,7 @@ function MoviesCard(props) {
 					></button>
 				)}
 			</div>
-			<div className='movies__shot_time'>{getTimeFromMins(props.movie.duration)}</div>
+			<div className='movies__shot_time'>{MOVIES_DURATION(props.movie.duration)}</div>
 		</div>
 	)
 }

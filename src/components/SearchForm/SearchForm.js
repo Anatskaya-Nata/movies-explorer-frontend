@@ -41,7 +41,7 @@ function SearchForm(props) {
 						value={searchQuery}
 						placeholder={placeholderMessage}
 						className='movies__searcher_input-text'
-						minLength='2'
+						minLength='1'
 						maxLength='30'
 						onChange={handleChangeSearchInput}
 					/>

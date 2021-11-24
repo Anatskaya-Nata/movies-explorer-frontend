@@ -16,3 +16,16 @@ function Header(props) {
 }
 
 export default Header
+/*{props.loggedIn ? (
+	<Header name='menu'>
+		<MenuButton
+			showMenu={props.showMenu}
+			isShowMenu={props.isShowMenu}
+			closeMenu={props.closeMenu}
+		/>
+	</Header>
+) : (
+	<Header name='promo'>
+		<EnterBlock />
+	</Header>
+)}*/

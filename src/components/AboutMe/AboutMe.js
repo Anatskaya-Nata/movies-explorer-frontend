@@ -36,15 +36,42 @@ function AboutMe(props) {
 
 				<div className='section__portfolio_block'>
 					<p className='section__portfolio_text'>Статичный сайт</p>
-					<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+					<button type='button' className='section__portfolio_button'>
+						<a
+							href='https://www.y-a-r.ru/'
+							rel='noreferrer'
+							target='_blank'
+							className='bottom__link'
+						>
+							<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+						</a>
+					</button>
 				</div>
 				<div className='section__portfolio_block'>
 					<p className='section__portfolio_text'>Адаптивный сайт</p>
-					<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+					<button type='button' className='section__portfolio_button'>
+						<a
+							href='https://anatskaya-nata.github.io/russian-travel/ '
+							rel='noreferrer'
+							target='_blank'
+							className='bottom__link'
+						>
+							<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+						</a>
+					</button>
 				</div>
 				<div className='section__portfolio_block section__portfolio_block-end'>
 					<p className='section__portfolio_text'>Одностраничное приложение</p>
-					<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+					<button type='button' className='section__portfolio_button'>
+						<a
+							href='https://frontend.mesto.nomoredomains.rocks/'
+							rel='noreferrer'
+							target='_blank'
+							className='bottom__link'
+						>
+							<img src={arrow} alt='стрелка' className='section__portfolio_pic' />
+						</a>
+					</button>
 				</div>
 			</div>
 		</section>

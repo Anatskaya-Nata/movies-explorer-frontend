@@ -3,7 +3,7 @@ import SearchForm from '../SearchForm/SearchForm'
 import Preloader from '../Preloader/Preloader'
 import MoviesCardList from '../MoviesCardList/MoviesCardList'
 import NotFoundMovies from '../NotFoundMovies/NotFoundMovies'
-import { filterMovies } from '../../utils/Constants'
+import { FILTERDMOVIES, MAX_SHORT_MOVIE_DURATION } from '../../utils/Constants'
 import Header from '../Header/Header'
 import MenuButton from '../MenuButton/MenuButton'
 
@@ -22,7 +22,7 @@ function SavedMovies(props) {
 		setInitialSavedMovies(props.savedUserMovies)
 		setIsErrorMessage(false)
 		const savedMoviesCards = props.savedUserMovies.filter((movie) =>
-			filterMovies(movie, query),
+			FILTERDMOVIES(movie, query),
 		)
 		setInitialSavedMovies(savedMoviesCards)
 	}
@@ -30,7 +30,7 @@ function SavedMovies(props) {
 	function handleDuration() {
 		if (!shortMovieFilter) {
 			const moviesFilter = props.savedUserMovies.filter(
-				(movieCard) => movieCard.duration <= 55,
+				(movieCard) => movieCard.duration <= MAX_SHORT_MOVIE_DURATION,
 			)
 			setInitialSavedMovies(moviesFilter)
 		} else {

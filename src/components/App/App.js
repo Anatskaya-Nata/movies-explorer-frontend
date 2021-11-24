@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Switch, useLocation, useHistory } from 'react-router-dom'
+import { Route, Switch, useLocation, Redirect, useHistory } from 'react-router-dom'
 import './App.css'
 import Movies from '../Movies/Movies'
 import SavedMovies from '../SavedMovies/SavedMovies'
@@ -22,7 +22,7 @@ function App() {
 	const [infosignMessage, setInfosignMessage] = React.useState('')
 	const [isShowMenu, setIsShowMenu] = React.useState(false)
 	const history = useHistory()
-	const location = useLocation()
+	let location = useLocation()
 
 	React.useEffect(() => {
 		if (loggedIn) {
@@ -64,8 +64,11 @@ function App() {
 			auth
 				.getUser(jwt)
 				.then((res) => {
-					setLoggedIn(true)
-					setCurrentUser(res)
+					if (res) {
+						setLoggedIn(true)
+						setCurrentUser(res)
+						history.push('/')
+					}
 				})
 				.catch((err) => {
 					console.log(`Переданный токен некорректен ${err}`)
@@ -73,7 +76,8 @@ function App() {
 					history.push('/')
 				})
 		}
-	}, [loggedIn, history])
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
 
 	function handleLogin(email, password) {
 		auth
@@ -85,6 +89,7 @@ function App() {
 					setLoggedIn(true)
 					setServerError(null)
 					history.push('/movies')
+					return loggedIn
 				}
 			})
 			.catch((err) => {
@@ -105,7 +110,7 @@ function App() {
 				handleLogin(email, password)
 				setInfosignMessage('')
 				setServerError(null)
-				history.push('/movies')
+				//history.push('/movies')
 			})
 			.catch((err) => {
 				if (err === 'Ошибка: 409') {
@@ -141,7 +146,9 @@ function App() {
 				getSavedMoviesCards()
 			})
 			.catch((err) => {
-				console.log(`Ошибка: ${err}`)
+				if (err === 'Ошибка: 400') {
+					setServerError(400)
+				}
 			})
 	}
 
@@ -186,16 +193,22 @@ function App() {
 	return (
 		<CurrentUserContext.Provider value={currentUser}>
 			<div className='App'>
-				<div className='page'>
+				<div className='app__page'>
 					<Switch>
 						<Route exact path='/'>
-							<Main />
+							<Main
+								loggedIn={loggedIn}
+								isShowMenu={isShowMenu}
+								showMenu={handleShowMenuClick}
+								closeMenu={closeMenu}
+							/>
 						</Route>
 						<Route path='/signup'>
 							<Register
 								onRegister={handleRegister}
 								errorText={infosignMessage}
 								serverError={serverError}
+								loggedIn={loggedIn}
 							/>
 						</Route>
 						<Route path='/signin'>
@@ -203,6 +216,7 @@ function App() {
 								onLogin={handleLogin}
 								errorText={infosignMessage}
 								serverError={serverError}
+								loggedIn={loggedIn}
 							/>
 						</Route>
 
@@ -246,6 +260,7 @@ function App() {
 							<PageNotFound />
 						</Route>
 					</Switch>
+					<Route>{loggedIn ? <Redirect to='/movies' /> : <Redirect to='/' />}</Route>
 					<Footer />
 				</div>
 			</div>

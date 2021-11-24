@@ -83,6 +83,12 @@
 	margin: 20px 0 20px 0;
 }
 
+.section__portfolio_button{
+border: none;
+background-color: #202020;;
+padding: 0;
+}
+
 .section__portfolio_pic {
 	width: 13px;
 	height: 13px;

@@ -8,7 +8,7 @@
 
 .header__promo {
 	background: #073042;
-	padding: 0 10px;
+	/*padding: 0 10px;*/
 }
 
 .header__menu {
@@ -41,7 +41,7 @@
 		padding: 0;
 	}
 	.header__promo {
-		padding: 0 30px;
+		/*	padding: 0 30px;*/
 	}
 
 	.header__buttonblock_promo {
@@ -55,7 +55,7 @@
 	}
 
 	.header__promo {
-		padding: 0 70px;
+		/*padding: 0 70px;*/
 	}
 	.header__logo {
 		z-index: 50;

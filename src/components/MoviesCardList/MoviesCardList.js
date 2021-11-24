@@ -1,6 +1,10 @@
 import './MoviesCardList.css'
 import React from 'react'
-
+import {
+	NUMBER_OF_CARDS_MAX_WIDTH,
+	NUMBER_OF_CARDS_MIDDLE_WIDTH,
+	NUMBER_OF_CARDS_MIN_WIDTH,
+} from '../../utils/Constants'
 import MoviesCard from '../MoviesCard/MoviesCard'
 
 const MoviesCardList = (props) => {
@@ -12,18 +16,17 @@ const MoviesCardList = (props) => {
 			: setCountMovies(props.initialMovies.length)
 	}, [props.initialMovies, props.location])
 
-	//console.log(props.initialMovies)
 	function actualResizeHandler() {
-		if (window.innerWidth > 1280) {
-			setCountMovies(12)
-		} else if (window.innerWidth > 768) {
-			setCountMovies(8)
+		if (window.innerWidth > 1275) {
+			setCountMovies(NUMBER_OF_CARDS_MAX_WIDTH)
+		} else if (window.innerWidth > 760) {
+			setCountMovies(NUMBER_OF_CARDS_MIDDLE_WIDTH)
 		} else {
-			setCountMovies(5)
+			setCountMovies(NUMBER_OF_CARDS_MIN_WIDTH)
 		}
 	}
 	function addMoreMovies() {
-		if (window.innerWidth > 1280) {
+		if (window.innerWidth > 1275) {
 			setCountMovies(countMovies + 4)
 		} else {
 			setCountMovies(countMovies + 2)

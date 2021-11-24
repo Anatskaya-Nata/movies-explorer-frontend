@@ -2,3 +2,11 @@
 	background-color: #202020;
 	padding-bottom: 500px;
 }
+
+.app__page {
+	font-family: 'Inter', 'Arial', sans-serif;
+	background-color: #202020;
+	width: 100%;
+	min-height: 100vh;
+	margin: 0 auto 0;
+}

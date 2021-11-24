@@ -1,7 +1,19 @@
 .page {
-	font-family: 'Inter', 'Arial', sans-serif;
-	background-color: #202020;
-	width: 100%;
-	min-height: 100vh;
-	margin: 0 auto 0;
+	background: #073042;
+	padding: 0 10px;
+}
+.page__logged {
+	background: #202020;
+}
+
+@media screen and (min-width: 768px) {
+	.page {
+		padding: 0 30px;
+	}
+}
+
+@media screen and (min-width: 1280px) {
+	.page {
+		padding: 0 70px;
+	}
 }
