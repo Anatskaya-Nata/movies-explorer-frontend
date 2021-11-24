@@ -3,7 +3,7 @@
 	justify-content: space-between;
 	align-items: center;
 	padding: 0 14px;
-	position: relative;
+	/*position: relative;*/
 }
 
 .header__promo {
