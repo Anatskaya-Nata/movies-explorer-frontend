@@ -1,0 +1,101 @@
+.signform__input_block {
+	margin: 0 0 20px 0;
+}
+
+.signform__input_block-pro {
+	display: flex;
+	width: 260px;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0;
+}
+
+.signform__input_block-pro + .signform__input_block-pro {
+	padding-top: 16px;
+	margin-top: 16px;
+	border-top: 1px solid #424242;
+}
+
+.signform__input_subtitle {
+	font-weight: 400;
+	font-size: 10px;
+	line-height: 12px;
+	text-align: left;
+	color: #8b8b8b;
+}
+
+.signform__input_subtitle-pro {
+	font-size: 11px;
+	line-height: 13.31px;
+	color: #ffffff;
+	margin: 0;
+}
+
+.signform__input {
+	width: 260px;
+	height: 45px;
+	border-radius: 6px;
+	border: none;
+	background-color: #2f2f2f;
+	color: #ffffff;
+	font-weight: 400;
+	font-size: 13px;
+	line-height: 16px;
+	padding: 0 15px;
+	box-sizing: border-box;
+}
+
+.signform__input_pro {
+	width: 150px;
+	height: 14px;
+	border-radius: 0px;
+	font-size: 11px;
+	line-height: 13.31px;
+	background-color: #202020;
+	text-align: right;
+	padding: 0;
+}
+
+.signform__input_pro + .signform__input_pro {
+	border-bottom: 2px solid #ffffff;
+}
+
+.signform__input_name {
+	color: #ffffff;
+}
+
+.signform__input_mail {
+	color: #ffffff;
+}
+.signform__input_password {
+	color: #ee3465;
+}
+
+@media screen and (min-width: 768px) {
+	.signform__input {
+		width: 396px;
+		height: 46px;
+		font-weight: 400;
+		font-size: 13px;
+		line-height: 15.73px;
+	}
+	.signform__input_block-pro {
+		display: flex;
+		width: 410px;
+		flex-direction: row;
+		align-items: center;
+		justify-content: space-between;
+		margin: 0;
+	}
+
+	.signform__input_pro {
+		width: 365px;
+		height: 14px;
+		font-size: 13px;
+		line-height: 16px;
+	}
+}
+
+@media screen and (min-width: 1280px) {
+}

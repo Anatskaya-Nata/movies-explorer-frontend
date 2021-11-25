@@ -1,0 +1,16 @@
+.profile {
+	padding: 0 10px;
+	position: relative;
+}
+
+@media screen and (min-width: 768px) {
+	.profile {
+		padding: 0 26px;
+	}
+}
+
+@media screen and (min-width: 1280px) {
+	.profile {
+		padding: 0 70px;
+	}
+}
